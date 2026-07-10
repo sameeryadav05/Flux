@@ -32,24 +32,14 @@ export async function getHealthRouteInfo(PORT,mongoose=null)
                 PORT,
                 Database:mongoose==null ? "null" :dbStatus[mongoose.connection.readyState],
                 uptime:formatUptime(),
-                node_version: process.version,
                 Info:{
                     cpu:{
-                        manufacturer:cpuinfo.manufacturer,
-                        brand:cpuinfo.brand,
-                        processors:cpuinfo.processors,
                         cpu_cores: os.cpus().length, 
                         currentLoad: currentLoad.currentLoad.toFixed(2) + "%"
-                    },
-                    system:{
-                        manufacturer:systeminfo.manufacturer,
-                        model:systeminfo.model
                     },
                     OS:{
                         platform:osInfo.platform,
                         distro:osInfo.distro,
-                        arch:osInfo.arch,
-                        hostname:osInfo.hostname
                     }
                 }
         }

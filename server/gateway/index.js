@@ -6,8 +6,9 @@ import proxy from 'express-http-proxy';
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { protect } from './middlewares/Auth.middleware.js';
-const app = express();
+import {getGatewayHealth} from './utils/gateway.health.js'
 
+const app = express();
 
 
 app.use(morgan('dev'))
@@ -39,6 +40,11 @@ app.get('/me',protect,(req,res)=>{
         console.log("Me Error : ",error);
          return res.status(401).json({message:"Un-Authorized"})
     }
+})
+
+app.get('/health',async (req,res)=>{
+    const data = await getGatewayHealth();
+    res.json(data) 
 })
 
 const PORT = process.env.PORT || 8000
