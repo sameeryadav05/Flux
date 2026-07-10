@@ -48,9 +48,6 @@ export async function getGatewayHealth(PORT) {
 
     });
 
-    response.status = results.every(r => r.status === "fulfilled")
-        ? "UP"
-        : "DEGRADED";
 
     return response;
 }
