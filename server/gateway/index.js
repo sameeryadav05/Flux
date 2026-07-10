@@ -21,6 +21,7 @@ app.use(cookieParser())
 // app.disable("etag")
 app.use("/auth",proxy(process.env.AUTH_SERVICE_URI))
 app.use("/chat",proxy(process.env.CHAT_SERVICE_URI))
+
 app.get('/me',protect,(req,res)=>{
     try {
         const {user} = req;
