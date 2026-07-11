@@ -7,6 +7,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { protect } from './middlewares/Auth.middleware.js';
 import {getGatewayHealth} from './utils/gateway.health.js'
+import { proxyWithHeader } from './utils/proxyHeader.js';
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.use(cors({
 app.use(cookieParser())
 // app.disable("etag")
 app.use("/auth",proxy(process.env.AUTH_SERVICE_URI))
-app.use("/chat",proxy(process.env.CHAT_SERVICE_URI))
+app.use("/chat",protect,proxyWithHeader(process.env.CHAT_SERVICE_URI))
 
 app.get('/me',protect,(req,res)=>{
     try {

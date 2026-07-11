@@ -4,6 +4,7 @@ dotenv.config();
 import connectDb from './config/Db.js';
 import {getHealthRouteInfo} from "../../../shared/health/health.js"
 import mongoose from 'mongoose';
+import chatRouter from './routes/chat.route.js';
 
 
 const app = express();
@@ -18,6 +19,8 @@ app.get('/health',async (req,res)=>{
     return res.json(data)
 })
 
+app.use('/',chatRouter)
+
 connectDb().then(()=>{
-    app.listen(PORT,()=>console.log(`Server is listening on port ${PORT}`))
+    app.listen(PORT,()=>console.log(`CHAT service is listening on port ${PORT}`))
 })
