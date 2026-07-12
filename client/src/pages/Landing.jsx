@@ -7,7 +7,7 @@ const LandingPage = () => {
     const navigate = useNavigate()
 
     return (
-        <>
+        < >
             <style>
                 {`
                     @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
@@ -38,7 +38,8 @@ const LandingPage = () => {
                 `}
             </style>
 
-            <header  className='bg-black text-white flex flex-col items-center bg-[url("https://assets.prebuiltui.com/images/components/hero-section/hero-background-image.png")] bg-cover bg-center bg-no-repeat pb-10 custom-scrollbar'>
+            <div className="h-screen overflow-hidden">
+                            <header  className='bg-black text-white flex flex-col items-center bg-[url("https://assets.prebuiltui.com/images/components/hero-section/hero-background-image.png")] bg-cover bg-center bg-no-repeat pb-10 custom-scrollbar'>
                 <nav className="flex flex-col items-center w-full" >
                     <div className="flex items-center justify-between p-4 md:px-16 lg:px-24 xl:px-32 md:py-4 w-full">
                         <a href="https://prebuiltui.com" className="flex font-extrabold text-2xl  gap-4 bg-gradient-to-r from-neutral-900 to-neutral-500 dark:from-white dark:to-neutral-500 bg-clip-text text-transparent tracking-wider">
@@ -53,7 +54,7 @@ const LandingPage = () => {
                                 </svg>
                             </button>
                             <div className='p-[0.5px] rounded-full bg-linear-to-r from-white to-[#999999]/0'>
-                                <button onClick={()=>navigate('/auth')} className="hidden md:flex items-center gap-2 bg-[#A6FF5D] text-gray-800 font-medium px-4 py-2.5 rounded-full text-sm transition cursor-pointer group">
+                                <button onClick={()=>navigate('/auth')} className="hidden md:flex items-center gap-2 bg-[#A6FF5D] text-gray-800 font-medium px-4 py-2.5 rounded-full text-sm transition cursor-pointer group btn">
                                     <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.795.605v2.593m1.245-1.296h-2.488M1.845 13.565c.687 0 1.244-.58 1.244-1.296s-.557-1.296-1.244-1.296-1.244.58-1.244 1.296.557 1.296 1.244 1.296M6.209 1.13a.65.65 0 0 1 .214-.379.61.61 0 0 1 .795 0 .66.66 0 0 1 .214.38l.653 3.601c.047.256.166.492.343.676s.403.309.649.357l3.456.681a.62.62 0 0 1 .364.223.665.665 0 0 1 0 .828.62.62 0 0 1-.364.223l-3.456.681a1.23 1.23 0 0 0-.65.358c-.176.184-.295.42-.342.675l-.653 3.602a.65.65 0 0 1-.214.38.61.61 0 0 1-.795 0 .65.65 0 0 1-.214-.38l-.654-3.602a1.3 1.3 0 0 0-.342-.675 1.23 1.23 0 0 0-.649-.358l-3.456-.68a.62.62 0 0 1-.365-.224.665.665 0 0 1 0-.828.62.62 0 0 1 .365-.223l3.456-.68c.246-.05.472-.174.649-.358s.296-.42.342-.676z" stroke="#1e2939" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
                                      <div className="relative overflow-hidden">
                                         <span className="block transition-transform duration-200 group-hover:-translate-y-full">
@@ -92,7 +93,7 @@ const LandingPage = () => {
 
 
                 <div className='flex gap-3 mt-8'>
-                    <button onClick={()=>navigate('/auth')} className="bg-[#A6FF5D] hover:bg-[#A6FF5D]/90 text-gray-800 px-6 py-2.5 rounded-full text-sm transition cursor-pointer group">
+                    <button onClick={()=>navigate('/auth')} className="bg-[#A6FF5D] hover:bg-[#A6FF5D]/90 text-gray-800 px-6 py-2.5 rounded-full text-sm transition cursor-pointer group ">
                          <div className="relative overflow-hidden">
                             <span className="block transition-transform duration-200 group-hover:-translate-y-full">
                                 Launch Flux.ai
@@ -110,6 +111,7 @@ const LandingPage = () => {
                     {/* <p className='text-sm text-white/50'>Scroll down</p> */}
                 </div>
             </header>
+            </div>
         </>
     )
 }
