@@ -8,14 +8,19 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ProtectedRoutes, PublicRoutes } from './components/Layout'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
+import LandingPage from './pages/Landing'
 
 
 
   const Router = createBrowserRouter([
     {
       path:'/',
-      element:<ProtectedRoutes> <Home/> </ProtectedRoutes>
+      element:<PublicRoutes><LandingPage/></PublicRoutes>
       
+    },
+    {
+      path:'/ai',
+      element:<ProtectedRoutes> <Home/> </ProtectedRoutes>
     },
     {
       path:'/auth',

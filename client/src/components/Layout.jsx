@@ -9,7 +9,7 @@ export const PublicRoutes = ({children}) => {
 
     if(isAuthenticated)
     {
-         return <Navigate to="/" replace />;
+         return <Navigate to="/ai" replace />;
     }
     return children;
     
@@ -24,7 +24,7 @@ export const ProtectedRoutes = ({ children }) => {
     } = useAuth();
 
     if (isError && error?.response?.status === 401) {
-        return <Navigate to="/auth" replace />;
+        return <Navigate to="/" replace />;
     }
 
     return children;

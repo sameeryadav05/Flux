@@ -14,9 +14,10 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
-app.use('/',AuthRouter)
 
 const PORT = process.env.PORT || 8001
+
+app.use('/',AuthRouter)
 
 app.get('/health',async (req,res)=>{
     const data = await getHealthRouteInfo(PORT,mongoose)

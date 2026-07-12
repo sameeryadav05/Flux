@@ -5,7 +5,7 @@
 @layer base{
 
     *{
-        @apply transition-colors duration-75 overflow-hidden;
+        @apply transition-colors duration-75;
     }
 
     html{
@@ -45,4 +45,42 @@
         items-center
         justify-center
     }
+
+
+    .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #6b7280 transparent; /* Firefox */
+}
+
+/* Chrome, Edge, Safari */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #5a5a5a;
+  border-radius: 9999px;
+
+  /* This creates transparent space around the thumb */
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #7a7a7a;
+  background-clip: content-box;
+}
 }
