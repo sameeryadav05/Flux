@@ -4,6 +4,7 @@ dotenv.config();
 import connectDb from './config/Db.js'
 import {getHealthRouteInfo} from "../../../shared/health/health.js"
 import mongoose from 'mongoose';
+import agentRouter from './routes/agent.route.js';
 
 
 const app = express();
@@ -17,6 +18,8 @@ app.get('/health',async (req,res)=>{
     const data = await getHealthRouteInfo(PORT,mongoose)
     return res.json(data)
 })
+
+app.use('/',agentRouter)
 
 
 
