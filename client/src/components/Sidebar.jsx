@@ -1,15 +1,26 @@
 import logo from "/favicon.svg";
 import { GoSidebarCollapse } from "react-icons/go";
 import { HiPlus } from "react-icons/hi2";
+import { IoExitOutline } from "react-icons/io5";
+import { CiLight } from "react-icons/ci";
+import { MdDarkMode } from "react-icons/md";
 
-import { useCreateConversation } from "../api/ChatService";
+import { useCreateConversation, useLogout } from "../api/ChatService";
 import Conversations from "./Conversations";
 import { useAuth } from "../utils/AuthProvider";
+import { useDispatch, useSelector } from "react-redux";
+import { toogleTheme } from "../redux/theme/themeSlice";
+
 
 const Sidebar = () => {
   const { mutate: createConversation, isPending } = useCreateConversation();
-  const {user} = useAuth();
-  console.log(user);
+  const { user } = useAuth();
+  const logoutQuery = useLogout()
+  const theme = useSelector((state) => state.theme.mode);
+  const dispatch = useDispatch();
+
+
+
   return (
     <aside
       className="
@@ -21,45 +32,50 @@ const Sidebar = () => {
       flex
       flex-col
 
-      bg-neutral-950
+      bg-white
+      dark:bg-neutral-950
 
       border-r
-      border-neutral-800
+      border-neutral-200
+      dark:border-neutral-800
     "
     >
       {/* HEADER */}
 
-      <div className="flex items-center justify-between px-4 py-4 border-b border-neutral-800">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg hover:bg-neutral-900">
+      <div className="flex items-center justify-between px-4 py-4 border-b border-neutral-200 dark:border-neutral-800">
+     
+        <div className="flex flex-center gap-1">
+              <div className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 transition">
             <GoSidebarCollapse size={20} />
           </div>
 
-          <img src={logo} className="w-8 h-8" />
+            <div className="flex flex-center gap-2">
+                  <img src={logo} className="w-6 h-6" />
+                  <h2
+                    className="
+                    font-extrabold
+                    text-lg
+                    bg-gradient-to-r
+                    from-neutral-900
+                    to-neutral-500
+                    dark:from-white
+                    dark:to-neutral-500
+                    bg-clip-text
+                    text-transparent
+                    tracking-wider
+                  "
+                  >
+                    Flux.ai
+                  </h2>
+            </div>
 
-          <h2
-            className="font-extrabold text-lg bg-gradient-to-r from-neutral-900 to-neutral-500 dark:from-white dark:to-neutral-500 bg-clip-text text-transparent tracking-wider"
-          >
-            Flux.ai
-          </h2>
+
         </div>
 
-        <span
-          className="
-          text-xs
+            <div className="text-xs px-3 py-1 rounded-full bg-violet-500/20 text-violet-700">
+                Free
+            </div>
 
-          px-3
-          py-1
-
-          rounded-full
-
-          bg-violet-500/20
-
-          text-violet-400
-        "
-        >
-          Free
-        </span>
       </div>
 
       {/* NEW CHAT */}
@@ -70,21 +86,21 @@ const Sidebar = () => {
           disabled={isPending}
           className="
           w-full
-
           flex
           items-center
           justify-center
           gap-2
-
           rounded-xl
-
           py-3
 
-          bg-white
+          bg-neutral-900
+          text-white
 
-          text-black
+          hover:bg-black
 
-          hover:bg-neutral-200
+          dark:bg-white
+          dark:text-black
+          dark:hover:bg-neutral-200
 
           transition
         "
@@ -95,7 +111,7 @@ const Sidebar = () => {
         </button>
       </div>
 
-      {/* SCROLLABLE CONVERSATIONS */}
+      {/* CONVERSATIONS */}
 
       <div className="flex-1 overflow-hidden">
         <Conversations />
@@ -103,53 +119,88 @@ const Sidebar = () => {
 
       {/* PROFILE */}
 
-      <div className="border-t border-neutral-800 p-3">
-        <button
-          className="
-          w-full
+      <div className="border-t border-neutral-200 dark:border-neutral-800 p-3 flex flex-col gap-2">
+        <div className="w-full flex items-center justify-between rounded-xl p-2 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition">
+          <div className="flex-center gap-3">
 
-          flex
-          items-center
+           
+                <img src={user.avatar} className="w-10 h-10 rounded-full" alt="avatar-2"/>
+            
 
-          gap-3
+            <div className="text-left">
+              <p className="text-sm font-medium text-neutral-900 dark:text-white">
+                {user?.name}
+              </p>
+            </div>
+          </div>
 
-          rounded-xl
+          <button className="text-sm p-2 flex-center rounded-md bg-violet-500/20 text-violet-700 dark:text-white">
+            upgrade
+          </button>
+        </div>
 
-          p-2
-
-          hover:bg-neutral-900
-        "
-        >
-          <div
+        <div className="w-full flex items-center justify-center gap-4 rounded-xl p-2">
+          <button
+            onClick={()=>logoutQuery.refetch()}
             className="
-            h-10
-            w-10
+            bg-red-700
+            hover:bg-red-600
 
-            rounded-full
+            text-white
 
-            bg-violet-600
+            flex-1
+            flex-center
 
-            flex
+            p-2
 
-            items-center
+            rounded-xl
 
-            justify-center
+            active:scale-95
+
+            transition-all
+
+            duration-100
+
+            gap-3
+
+            text-md
 
             font-semibold
           "
-        
-          > <img src={user.avatar} className="h-full w-full rounded-full" alt=""/></div>
-            
-       
-          <div className="text-left">
-            <p className="text-sm font-medium">{user.name}</p>
+          >
+            Logout
 
-            <p className="text-xs text-neutral-400">Free Plan</p>
-          </div>
-        </button>
+            <span className="flex-center">
+              <IoExitOutline />
+            </span>
+          </button>
+
+          <button
+            className="
+            size-10
+            flex-center
+            rounded-lg
+            cursor-pointer
+
+            hover:bg-neutral-100
+            dark:hover:bg-neutral-900
+
+            transition
+          "
+            onClick={() => dispatch(toogleTheme())}
+          >
+            {theme === "dark" ? (
+              <CiLight size={22} />
+            ) : (
+              <MdDarkMode size={22} />
+            )}
+          </button>
+        </div>
       </div>
     </aside>
   );
 };
 
 export default Sidebar;
+
+

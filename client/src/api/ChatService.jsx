@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import API from './Axios';
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from 'react-router-dom';
 
 export const useCreateConversation = () => {
   const queryClient = useQueryClient();
@@ -34,8 +35,28 @@ export const useGetConversation = ()=>{
             const res = await API.get('/chat/get-conversation')
             return res.data
         },
+        staleTime:5*60*1000,
         enabled:true,
         refetchOnReconnect:true,
     })
     return query;
+}
+
+export const useLogout = ()=>{
+  const queryClient = useQueryClient();
+  const navigate = useNavigate()
+  const query = useQuery({
+    queryKey:["logout"],
+    queryFn: async ()=>{
+      const {data} = await API.get('/auth/logout')
+      return data;
+    },
+    enabled:false,
+  })
+  if(query.isSuccess)
+  {
+    navigate('/auth',{replace:true})
+    queryClient.invalidateQueries()
+  }
+  return query;
 }

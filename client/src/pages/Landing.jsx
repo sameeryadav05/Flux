@@ -96,7 +96,7 @@ const LandingPage = () => {
                     <button onClick={()=>navigate('/auth')} className="bg-[#A6FF5D] hover:bg-[#A6FF5D]/90 text-gray-800 px-6 py-2.5 rounded-full text-sm transition cursor-pointer group ">
                          <div className="relative overflow-hidden">
                             <span className="block transition-transform duration-200 group-hover:-translate-y-full">
-                                Launch Flux.ai
+                                Get Started
                             </span>
                             <span className="absolute top-0 left-0 block transition-transform duration-200 group-hover:translate-y-0 translate-y-full">
                                 Get Started
