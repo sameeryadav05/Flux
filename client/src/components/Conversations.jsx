@@ -10,6 +10,13 @@ const Conversations = () => {
       </div>
     );
   }
+  if (data.length === 0) {
+    return (
+      <div className="p-4 text-sm text-neutral-500 dark:text-neutral-400">
+        No Recent Chats
+      </div>
+    );
+  }
 
   return (
     <div

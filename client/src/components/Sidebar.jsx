@@ -4,26 +4,35 @@ import { HiPlus } from "react-icons/hi2";
 import { IoExitOutline } from "react-icons/io5";
 import { CiLight } from "react-icons/ci";
 import { MdDarkMode } from "react-icons/md";
-
+import { motion, AnimatePresence } from "motion/react";
 import { useCreateConversation, useLogout } from "../api/ChatService";
 import Conversations from "./Conversations";
 import { useAuth } from "../utils/AuthProvider";
 import { useDispatch, useSelector } from "react-redux";
 import { toogleTheme } from "../redux/theme/themeSlice";
+import { useEffect, useState } from "react";
+import Tooltip from "./Tooltip";
 
 
 const Sidebar = () => {
   const { mutate: createConversation, isPending } = useCreateConversation();
-  const { user } = useAuth();
+  const { user ,         isCollapsed,
+        setIsCollapsed,
+        isMobile,
+        setIsMobile,
+        isOpen,
+        setIsOpen } = useAuth();
   const logoutQuery = useLogout()
   const theme = useSelector((state) => state.theme.mode);
   const dispatch = useDispatch();
 
 
-
   return (
+    <>
+    {
+
     <aside
-      className="
+      className={`
       h-screen
       w-[70%]
       md:w-80
@@ -38,18 +47,15 @@ const Sidebar = () => {
       border-r
       border-neutral-200
       dark:border-neutral-800
-    "
+    `}
     >
       {/* HEADER */}
 
       <div className="flex items-center justify-between px-4 py-4 border-b border-neutral-200 dark:border-neutral-800">
      
-        <div className="flex flex-center gap-1">
-              <div className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 transition">
-            <GoSidebarCollapse size={20} />
-          </div>
+        <div className="flex flex-center gap-3">
 
-            <div className="flex flex-center gap-2">
+            <div className="flex flex-center gap-2 cursor-pointer">
                   <img src={logo} className="w-6 h-6" />
                   <h2
                     className="
@@ -70,11 +76,25 @@ const Sidebar = () => {
             </div>
 
 
+
+
         </div>
 
-            <div className="text-xs px-3 py-1 rounded-full bg-violet-500/20 text-violet-700">
-                Free
-            </div>
+    <Tooltip text={isCollapsed?"open sidebar":"close sidebar"} position="right">
+        <button className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 transition"
+          onClick={()=>{
+            if(isMobile)
+            {
+              setIsOpen(false);
+            }
+            else{
+                setIsCollapsed(prev=>!prev)
+            }
+          }}
+        >
+              <GoSidebarCollapse size={20} />
+        </button>
+    </Tooltip>
 
       </div>
 
@@ -107,7 +127,7 @@ const Sidebar = () => {
         >
           <HiPlus size={18} />
 
-          {isPending ? "Creating..." : "New Chat"}
+          New Chat
         </button>
       </div>
 
@@ -124,22 +144,25 @@ const Sidebar = () => {
           <div className="flex-center gap-3">
 
            
-                <img src={user.avatar} className="w-10 h-10 rounded-full" alt="avatar-2"/>
+                <img src={user.avatar} className="size-8 md:size-10 rounded-full" alt="avatar-2"/>
             
 
-            <div className="text-left">
-              <p className="text-sm font-medium text-neutral-900 dark:text-white">
+            <div className="text-left flex flex-col">
+              <p className="text-xs md:text-sm font-medium text-neutral-900 dark:text-white truncate">
                 {user?.name}
               </p>
+              <span className="text-[12px] md:text-xs text-neutral-900/45 dark:text-neutral-300/30">Free plan</span>
             </div>
           </div>
 
-          <button className="text-sm p-2 flex-center rounded-md bg-violet-500/20 text-violet-700 dark:text-white">
+          <button className="text-xs p-1  flex-center rounded-md bg-violet-500/20 text-violet-700 dark:text-white">
             upgrade
           </button>
         </div>
 
         <div className="w-full flex items-center justify-center gap-4 rounded-xl p-2">
+
+   
           <button
             onClick={()=>logoutQuery.refetch()}
             className="
@@ -147,11 +170,10 @@ const Sidebar = () => {
             hover:bg-red-600
 
             text-white
-
-            flex-1
             flex-center
 
             p-2
+            flex-1
 
             rounded-xl
 
@@ -169,35 +191,39 @@ const Sidebar = () => {
           "
           >
             Logout
-
-            <span className="flex-center">
+            <span className="flex-center ml-[1.5px]">
               <IoExitOutline />
             </span>
           </button>
+   
 
-          <button
-            className="
-            size-10
-            flex-center
-            rounded-lg
-            cursor-pointer
+          <Tooltip text={'Toogle theme'}>
+            <button
+              className="
+              size-10
+              flex-center
+              rounded-lg
+              cursor-pointer
 
-            hover:bg-neutral-100
-            dark:hover:bg-neutral-900
+              hover:bg-neutral-100
+              dark:hover:bg-neutral-900
 
-            transition
-          "
-            onClick={() => dispatch(toogleTheme())}
-          >
-            {theme === "dark" ? (
-              <CiLight size={22} />
-            ) : (
-              <MdDarkMode size={22} />
-            )}
-          </button>
+              transition
+            "
+              onClick={() => dispatch(toogleTheme())}
+            >
+              {theme === "dark" ? (
+                <CiLight size={22} />
+              ) : (
+                <MdDarkMode size={22} />
+              )}
+            </button>
+          </Tooltip>
         </div>
       </div>
     </aside>
+    }
+    </>
   );
 };
 
