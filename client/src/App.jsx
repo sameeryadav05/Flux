@@ -19,7 +19,7 @@ import LandingPage from './pages/Landing'
       
     },
     {
-      path:'/ai',
+      path:'/ai/:conversationId',
       element:<ProtectedRoutes> <Home/> </ProtectedRoutes>
     },
     {

@@ -27,6 +27,118 @@ const Sidebar = () => {
   const dispatch = useDispatch();
 
 
+  if(isCollapsed && !isMobile)
+  {
+    return (
+      <>
+             <aside
+      className={`
+      h-screen
+      md:w-16
+
+
+      flex
+      flex-col
+
+      bg-white
+      dark:bg-neutral-950
+
+      border-r
+      border-neutral-200
+      dark:border-neutral-800
+    `}
+    >
+      {/* HEADER */}
+
+      <div className="flex items-center justify-between px-4 py-4 border-b border-neutral-200 dark:border-neutral-800">
+     
+        <Tooltip text={isCollapsed?"open sidebar":"close sidebar"} position="right">
+            <button className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 transition"
+              onClick={()=>{
+                if(isMobile)
+                {
+                  setIsOpen(false);
+                }
+                else{
+                    setIsCollapsed(prev=>!prev)
+                }
+              }}
+            >
+                  <GoSidebarCollapse size={20} />
+            </button>
+        </Tooltip>
+
+      </div>
+
+      {/* NEW CHAT */}
+
+      <div className="p-3">
+        <Tooltip text={'New Chat'} position="right">
+                      <button
+          onClick={createConversation}
+          disabled={isPending}
+          className="
+          
+          flex
+          items-center
+          justify-center
+          p-3
+
+          bg-neutral-900
+          text-white
+              text-3xl
+          hover:bg-black
+
+          dark:bg-white
+          dark:text-black
+          dark:hover:bg-neutral-200
+            rounded-full
+          transition
+        "
+        >
+          <HiPlus size={18} />
+        </button>
+        </Tooltip>
+      </div>
+
+      {/* CONVERSATIONS */}
+
+
+
+
+{/* PROFILE */}
+
+<div className="mt-auto  dark:border-neutral-800 p-3">
+  <div className="flex justify-center flex-col gap-2">
+    <img
+      src={user.avatar}
+      className="size-10 rounded-full"
+      alt="avatar"
+    />
+
+      <button className="text-xs flex-center rounded-lg bg-violet-500/20 text-violet-700 dark:text-white">
+            free
+      </button>
+  </div>
+</div>
+    </aside>
+      
+      
+      </>
+    )
+  }
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <>
     {
@@ -139,7 +251,9 @@ const Sidebar = () => {
 
       {/* PROFILE */}
 
-      <div className="border-t border-neutral-200 dark:border-neutral-800 p-3 flex flex-col gap-2">
+    
+
+      <div className="mt-auto border-t border-neutral-200 dark:border-neutral-800 p-3 flex flex-col gap-2">
         <div className="w-full flex items-center justify-between rounded-xl p-2 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition">
           <div className="flex-center gap-3">
 
