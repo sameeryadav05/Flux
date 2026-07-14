@@ -9,6 +9,9 @@ import { ProtectedRoutes, PublicRoutes } from './components/Layout'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import LandingPage from './pages/Landing'
+import EmptyChat from './components/chat/EmptyChat'
+import Chat from './components/chat/Chat'
+
 
 
 
@@ -19,8 +22,18 @@ import LandingPage from './pages/Landing'
       
     },
     {
-      path:'/ai/:conversationId',
-      element:<ProtectedRoutes> <Home/> </ProtectedRoutes>
+      path:'/ai',
+      element:<ProtectedRoutes> <Home/> </ProtectedRoutes>,
+      children:[
+        {
+          index:true,
+          element:<Chat/>
+        },
+        {
+          path:':conversationId',
+          element:<Chat/>
+        }
+      ]
     },
     {
       path:'/auth',

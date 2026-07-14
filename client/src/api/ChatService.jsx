@@ -4,8 +4,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from 'react-router-dom';
 
 export const useCreateConversation = () => {
+  const navigate = useNavigate()
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: async () => {
       console.log("create conversation");
@@ -15,7 +15,8 @@ export const useCreateConversation = () => {
 
     onSuccess: (data) => {
         console.log("create Conversation data",data);
-      queryClient.invalidateQueries({
+        navigate(`${data._id}`,{replace:true})
+        queryClient.invalidateQueries({
         queryKey: ["all", "conversation"],
       });
     },
@@ -40,6 +41,20 @@ export const useGetConversation = ()=>{
         refetchOnReconnect:true,
     })
     return query;
+}
+
+export const useGetMessages = (conversationId)=>{
+  const query = useQuery({
+    queryKey:["messages",conversationId],
+    queryFn:async()=>{
+      const{data} = await API.get(`/chat/getMessage/${conversationId}`)
+      return data
+    },
+    enabled: !!conversationId,
+    staleTime: 2 * 60 * 1000,
+  })
+
+  return query;
 }
 
 export const useLogout = ()=>{

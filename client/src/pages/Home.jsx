@@ -2,10 +2,11 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { toogleTheme } from '../redux/theme/themeSlice'
 import Sidebar from '../components/Sidebar'
-import Chat from '../components/Chat'
+import Chat from '../components/chat/Chat'
 import Artifacts from '../components/Artifacts'
 import { useAuth } from '../utils/AuthProvider'
 import { GoSidebarCollapse } from 'react-icons/go'
+import { Outlet } from 'react-router-dom'
 const Home = () => {
   const dispatch = useDispatch()
   const {  isCollapsed,
@@ -30,13 +31,12 @@ const Home = () => {
           </button>
 
       </>}
-      <Chat/>
-      <Artifacts/>
+      <Outlet/>
+      {/* <Artifacts/> */}
     </main>
 
     
   )
 }
 
-{/* <button className='' onClick={()=>dispatch(toogleTheme())}>Theme</button> */}
 export default Home

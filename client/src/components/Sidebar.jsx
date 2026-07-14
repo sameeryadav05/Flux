@@ -6,12 +6,14 @@ import { CiLight } from "react-icons/ci";
 import { MdDarkMode } from "react-icons/md";
 import { motion, AnimatePresence } from "motion/react";
 import { useCreateConversation, useLogout } from "../api/ChatService";
-import Conversations from "./Conversations";
+
 import { useAuth } from "../utils/AuthProvider";
 import { useDispatch, useSelector } from "react-redux";
 import { toogleTheme } from "../redux/theme/themeSlice";
 import { useEffect, useState } from "react";
 import Tooltip from "./Tooltip";
+import Conversations from "./chat/Conversations";
+import { GiTwoCoins } from "react-icons/gi";
 
 
 const Sidebar = () => {
@@ -169,22 +171,7 @@ const Sidebar = () => {
 
             <div className="flex flex-center gap-2 cursor-pointer">
                   <img src={logo} className="w-6 h-6" />
-                  <h2
-                    className="
-                    font-extrabold
-                    text-lg
-                    bg-gradient-to-r
-                    from-neutral-900
-                    to-neutral-500
-                    dark:from-white
-                    dark:to-neutral-500
-                    bg-clip-text
-                    text-transparent
-                    tracking-wider
-                  "
-                  >
-                    Flux.ai
-                  </h2>
+
             </div>
 
 
@@ -269,8 +256,8 @@ const Sidebar = () => {
             </div>
           </div>
 
-          <button className="text-xs p-1  flex-center rounded-md bg-violet-500/20 text-violet-700 dark:text-white">
-            upgrade
+          <button className="text-sm px-2 py-1  flex-center gap-2 rounded-md bg-violet-500/20 text-violet-700 dark:text-white">
+            <GiTwoCoins size={12}/>
           </button>
         </div>
 
@@ -311,7 +298,9 @@ const Sidebar = () => {
           </button>
    
 
-          <Tooltip text={'Toogle theme'}>
+{
+  isMobile &&            
+  <Tooltip text={'Toogle theme'}>
             <button
               className="
               size-10
@@ -333,6 +322,7 @@ const Sidebar = () => {
               )}
             </button>
           </Tooltip>
+}
         </div>
       </div>
     </aside>

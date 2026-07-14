@@ -11,4 +11,4 @@ chatRouter.post('/save-message',saveMessage)
 chatRouter.get('/getMessage/:conversationId',getMessage)
 chatRouter.post('/updateconversation',updateConversations)
 
-export default chatRouter;
+export default chatRouter; 

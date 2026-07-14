@@ -6,7 +6,6 @@ export async function createConversation(req,res)
 {
     try {
         const userId = req.headers["x-user-id"]
-        console.log(userId);
         const conversation = await Conversation.create({userId})
 
         return res.status(200).json(conversation);
@@ -20,7 +19,6 @@ export async function getConversations(req,res)
 {
     try {
         const userId = req.headers["x-user-id"]
-        console.log(userId);
         let conversations = await  Conversation.find({userId}).sort({updatedAt:-1})
 
         return res.json(conversations)
@@ -73,7 +71,7 @@ export async function getMessage(req,res){
 
         const messages = await Message.find({conversationId}).sort({createdAt:-1})
 
-        return res.json(200).json(messages)
+        return res.status(200).json(messages)
         
     } catch (error) {
         return res.status(500).json({message:`Failed to load ! \n Error : \n ${error}`})

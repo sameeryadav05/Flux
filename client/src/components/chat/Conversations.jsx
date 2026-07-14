@@ -1,8 +1,12 @@
-import { useGetConversation } from "../api/ChatService";
+import React from "react";
+
+import { useNavigate, useParams } from "react-router-dom";
+import { useGetConversation } from "../../api/ChatService";
 
 const Conversations = () => {
   const { data, isLoading } = useGetConversation();
-
+  const navigate = useNavigate();
+  const {conversationId} = useParams()
   if (isLoading) {
     return (
       <div className="p-4 text-sm text-neutral-500 dark:text-neutral-400">
@@ -31,6 +35,9 @@ const Conversations = () => {
       <div className="flex-1 overflow-y-auto custom-scrollbar px-2">
         {data?.map((conversation, index) => (
           <button
+          onClick={()=>{
+            navigate(`${conversation._id}`)
+          }}
             key={conversation._id}
             className={`
               w-full
@@ -42,7 +49,7 @@ const Conversations = () => {
               transition
 
               ${
-                index === 0
+                conversation._id === conversationId
                   ? "bg-neutral-200 dark:bg-neutral-800"
                   : "hover:bg-neutral-100 dark:hover:bg-neutral-900"
               }
