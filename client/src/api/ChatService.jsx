@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import API from './Axios';
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from 'react-router-dom';
+import { toast ,Bounce } from 'react-toastify';
 
 export const useCreateConversation = () => {
   const navigate = useNavigate()
@@ -27,6 +28,42 @@ export const useCreateConversation = () => {
 
   });
 };
+
+export const useChat = ()=>{
+      const queryClient = useQueryClient();
+      return useMutation({
+        mutationFn:async ({ prompt, conversationId })=>{
+          const {data} = await API.post('/agent/chat',{prompt,conversationId})
+          return data;
+        },
+
+        onSuccess:(newdata,variables)=>{
+          console.log("Ai Response",newdata);
+          queryClient.setQueryData(["messages",variables.conversationId],(oldData=[])=>{
+            return [
+              ...oldData,
+              newdata.userMessage,
+              newdata.assistantMessage
+            ]
+          })
+        },
+
+        onError:(error)=>{
+          console.log("Ai Response Error",error);
+            return toast.error(error.response?.data?.message, {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+            });
+        }
+      })
+} 
 
 export const useGetConversation = ()=>{
     const query = useQuery({
@@ -75,3 +112,4 @@ export const useLogout = ()=>{
   }
   return query;
 }
+

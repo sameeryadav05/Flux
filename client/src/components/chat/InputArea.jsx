@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FiArrowUp, FiPaperclip } from "react-icons/fi";
+import { useCreateConversation } from "../../api/ChatService";
+import { useParams } from "react-router-dom";
 
-const InputArea = () => {
+
+const InputArea = ({chatMutation}) => {
+  const {conversationId} = useParams();
   const textareaRef = useRef(null);
   const [value,setValue] = useState('')
-
+  const { mutateAsync: createConversation, isPending } = useCreateConversation();
   const handleInput = (e) => {
     e.target.style.height = "24px";
     e.target.style.height = `${Math.min(e.target.scrollHeight, 140)}px`;
@@ -14,12 +18,24 @@ const InputArea = () => {
     textareaRef.current.focus()
   },[])
 
-  function handleSubmit()
+  async function handleSubmit()
   {
     if (!value.trim()) return;
+    let id = conversationId;
+    if(!id)
+    {
+      const conversation = await createConversation();
+      id = conversation._id;
+    }
 
-    alert(value);
-    setValue("")
+    chatMutation.mutate({
+      prompt:value,
+      conversationId:id
+    })
+
+
+      setValue("")
+  
     textareaRef.current.style.height = "24px";
     textareaRef.current.focus();
 
@@ -115,7 +131,7 @@ const InputArea = () => {
 
             disabled:opacity-40
           "
-          disabled={!value.trim()}
+          disabled={!value.trim() || chatMutation.isPending}
           onClick={()=>handleSubmit()}
         >
           <FiArrowUp size={18} />

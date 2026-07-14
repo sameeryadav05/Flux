@@ -6,7 +6,7 @@ export const agent=async(req,res)=>{
     try {
         
         const {prompt,conversationId} = req.body
-        await axios.post('/save-message',{
+        const { data: userMessage }  = await axios.post('/save-message',{
 
             conversationId,role:"user",content:prompt
         })
@@ -15,8 +15,17 @@ export const agent=async(req,res)=>{
             conversationId,
         })
         const response = result.aiResponse
+        console.log(response);
+        const { data: assistantMessage }  = await axios.post("/save-message", {
+            conversationId,
+            role: "assistant",
+            content: response,
+        });
+
+
         return res.status(200).json({
-            response
+            userMessage,
+            assistantMessage
         })
 
     } catch (error) {

@@ -5,8 +5,10 @@ import EmptyChat from './EmptyChat'
 import { SecondaryLoader } from '../loader'
 import MessageBubble from '../MessageBubble'
 
+
 const ChatArea = ({messagesQuery}) => {
   const {data = [] , isLoading } = messagesQuery  
+  useGetMessages
   console.log("messeage data",data);
   const {conversationId} = useParams()
   console.log(conversationId);
@@ -16,7 +18,6 @@ const ChatArea = ({messagesQuery}) => {
           <SecondaryLoader/>
       </div>
     }
-
   return (
     <>
     {
