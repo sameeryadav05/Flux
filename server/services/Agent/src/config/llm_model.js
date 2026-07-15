@@ -15,22 +15,19 @@ const grok2 = new ChatGroq({
 
 
 const gemini = new ChatGoogleGenerativeAI({
-    model: "gemini-2.5-flash",
+    model: "gemini-flash-latest",
 })
 
 export function getModel(agent){
     switch (agent) {
         case "chat":
-            return grok1;
+            return gemini;
             break;
         case "search":
             return grok1;
             break;
         case "coding":
-            return gemini;
-            break;
-        case "coding":
-            return gemini;
+            return grok2;
             break;
         
         default:

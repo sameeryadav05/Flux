@@ -57,7 +57,16 @@ export const Router = async(state)=>{
                 ${state.prompt}
         `
 
-        const response = await llm.invoke(prompt)
+        const response = await llm.invoke([
+    {
+        role: "system",
+        content: prompt
+    },
+    {
+        role: "user",
+        content: state.prompt
+    }
+])
         console.log(response);
         return {
             ...state,

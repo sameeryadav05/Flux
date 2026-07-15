@@ -7,7 +7,7 @@ export const agent=async(req,res)=>{
     try {
         
         const {prompt,conversationId} = req.body
-        await addMessage(conversationId,"user",prompt);
+   
         const { data: userMessage }  = await axios.post('/save-message',{
 
             conversationId,role:"user",content:prompt
@@ -17,6 +17,7 @@ export const agent=async(req,res)=>{
             conversationId,
         })
         const response = result.aiResponse
+        await addMessage(conversationId,"user",prompt);
         await addMessage(conversationId,"assistant",response)
         const { data: assistantMessage }  = await axios.post("/save-message", {
             conversationId,
@@ -31,7 +32,7 @@ export const agent=async(req,res)=>{
         })
 
     } catch (error) {
-        
+        console.log(error);
         return res.status(500).json({message:`Something went wrong with Ai Agent ${error}`})
     }
 }

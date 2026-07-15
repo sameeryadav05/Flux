@@ -175,7 +175,7 @@ Always optimize your answer to maximize learning and usefulness.
 
 
 
-  console.log(messages);
+  // console.log(messages);
   const response = await llm.invoke(messages);
   return {
     ...state,
