@@ -148,8 +148,8 @@ const Sidebar = () => {
     <aside
       className={`
       h-screen
-      w-[70%]
-      md:w-80
+      w-full
+      md:w-56
       lg:w-72
 
       flex
@@ -179,7 +179,7 @@ const Sidebar = () => {
 
         </div>
 
-    <Tooltip text={isCollapsed?"open sidebar":"close sidebar"} position="right">
+    <Tooltip text={isCollapsed?"open sidebar":"close sidebar"} position={isMobile ? "left" : "right"}>
         <button className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 transition"
           onClick={()=>{
             if(isMobile)
@@ -249,7 +249,7 @@ const Sidebar = () => {
             
 
             <div className="text-left flex flex-col">
-              <p className="text-xs md:text-sm font-medium text-neutral-900 dark:text-white truncate">
+              <p className="text-xs md:text-xs lg:text-sm font-medium text-neutral-900 dark:text-white truncate">
                 {user?.name}
               </p>
               <span className="text-[12px] md:text-xs text-neutral-900/45 dark:text-neutral-300/30">Free plan</span>

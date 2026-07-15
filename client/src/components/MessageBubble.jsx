@@ -214,14 +214,14 @@ const MessageBubble = ({ role, content, isThinking }) => {
                 blockquote: ({ children }) => (
                   <blockquote
                     className="
-                      my-6
+                      my-2
                       border-l-4
                       border-violet-500
                       bg-violet-50
                       dark:bg-violet-950/20
                       rounded-r-lg
-                      pl-5
-                      py-3
+                      pl-2
+                      py-2
                       italic
                     "
                   >
@@ -240,11 +240,9 @@ const MessageBubble = ({ role, content, isThinking }) => {
                           style={theme === "dark" ? oneDark : oneLight}
                           customStyle={{
                             margin: 0,
-                            padding: 18,
+                            padding: 12,
                             borderRadius: 0,
                             fontSize: 14,
-                            background:
-                              theme === "dark" ? "#171717" : "#fafafa",
                           }}
                         >
                           {String(children).replace(/\n$/, "")}
