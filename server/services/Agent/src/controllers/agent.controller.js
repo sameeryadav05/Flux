@@ -27,8 +27,8 @@ export const agent=async(req,res)=>{
         
 
         return res.status(200).json({
-            userMessage,
-            assistantMessage
+            role:assistantMessage.role,
+            content:assistantMessage.content
         })
 
     } catch (error) {

@@ -9,9 +9,7 @@ import { useChat } from '../../api/ChatService'
 
 const ChatArea = ({messagesQuery,chatMutation}) => {
   const {data = [] , isLoading } = messagesQuery 
-  const isThinking = chatMutation.isPending
-  
-  console.log("messeage data",data);
+
   const {conversationId} = useParams()
   console.log(conversationId);
     if(isLoading)
@@ -32,7 +30,7 @@ const ChatArea = ({messagesQuery,chatMutation}) => {
               data.map((message,index)=>{
                 return (
                   <div key={index} className="mx-auto w-full max-w-4xl">
-                      <MessageBubble role={message?.role} content={message?.content} isThinking={isThinking}/>
+                      <MessageBubble role={message?.role} content={message?.content} isThinking={message?.isThinking}/>
                   </div>
                 )
               })

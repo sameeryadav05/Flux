@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 
 const MessageBubble = ({ role, content, isThinking }) => {
   const isUser = role === "user";
+
     const theme = useSelector((state) => state.theme.mode);
   return (
     <div

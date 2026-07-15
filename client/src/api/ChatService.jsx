@@ -36,20 +36,35 @@ export const useChat = ()=>{
           const {data} = await API.post('/agent/chat',{prompt,conversationId})
           return data;
         },
-
-        onSuccess:(newdata,variables)=>{
-          console.log("Ai Response",newdata);
+        onMutate:async (variables)=>{
+          await queryClient.cancelQueries({
+            queryKey:["messages",variables.conversationId]
+          }) // to avoid race condition
+          const previousMessageData = queryClient.getQueryData(["messages",variables.conversationId])
           queryClient.setQueryData(["messages",variables.conversationId],(oldData=[])=>{
-            return [
-              ...oldData,
-              newdata.userMessage,
-              newdata.assistantMessage
-            ]
+              return [
+                ...oldData,
+                {
+                  role:'user',
+                  content:variables.prompt
+                },
+                {
+                  role:'assistant',
+                  content:'',
+                  isThinking:true
+                }
+              ]
+              
           })
+
+          return {
+              previousMessageData
+          }
         },
 
-        onError:(error)=>{
-          console.log("Ai Response Error",error);
+        onError:(error,variables,context)=>{
+          queryClient.setQueryData(["messages",variables.conversationId],context.previousMessageData)
+          console.log("Ai Response Error",error?.response?.data);
             return toast.error(error.response?.data?.message, {
                 position: "top-right",
                 autoClose: 1000,
@@ -61,9 +76,53 @@ export const useChat = ()=>{
                 theme: "dark",
                 transition: Bounce,
             });
-        }
+        },
+
+        onSettled:(data, error, variables)=>{
+          queryClient.invalidateQueries(["messages",variables.conversationId])
+        },
+
+
+    
+        onSuccess:(data,variables)=>{
+          console.log("Ai Response",data);
+          queryClient.setQueryData(["messages",variables.conversationId],(old=[])=>{
+                old.map((msg)=>
+                  msg.isThinking ? {
+                      role: "assistant",
+                      content: data.content,
+                      isThinking: false,
+                  }
+                  : msg
+                )
+          })
+        },
+
+
       })
 } 
+
+export const useGetMessages = (conversationId)=>{
+  const query = useQuery({
+    queryKey:["messages",conversationId],
+    queryFn:async()=>{
+      const{data} = await API.get(`/chat/getMessage/${conversationId}`)
+      return data
+    },
+    select:(messages)=>{
+      return messages.map((message)=>({
+        role:message.role,
+        content:message.content,
+        isThinking: message.isThinking ?? false,
+      }))
+    },
+    enabled: !!conversationId,
+    staleTime: 2 * 60 * 1000,
+    gcTime:10*60*1000
+  })
+
+  return query;
+}
 
 export const useGetConversation = ()=>{
     const query = useQuery({
@@ -80,19 +139,22 @@ export const useGetConversation = ()=>{
     return query;
 }
 
-export const useGetMessages = (conversationId)=>{
-  const query = useQuery({
-    queryKey:["messages",conversationId],
-    queryFn:async()=>{
-      const{data} = await API.get(`/chat/getMessage/${conversationId}`)
-      return data
+export const useUpdateConversation = ()=>{
+  const queryClient  = useQueryClient()
+  return useMutation({
+    mutationFn:async ({id,title})=>{
+      const {data } = await API.post('/chat/updateconversation',{id,title});
+      return data;
     },
-    enabled: !!conversationId,
-    staleTime: 2 * 60 * 1000,
+    onSuccess:(data)=>
+    {
+      queryClient.invalidateQueries({
+        queryKey:['all','conversation']
+      })
+    }
   })
-
-  return query;
 }
+
 
 export const useLogout = ()=>{
   const queryClient = useQueryClient();

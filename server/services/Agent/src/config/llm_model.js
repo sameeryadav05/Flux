@@ -11,6 +11,10 @@ const grok2 = new ChatGroq({
     model: "llama-3.1-8b-instant",
     apiKey:process.env.GROQ_API_KEY_2,
 })
+const grok3 = new ChatGroq({
+    model: "llama-3.1-8b-instant",
+    apiKey:process.env.GROQ_API_KEY_3,
+})
 // openai/gpt-oss-120b
 
 
@@ -21,17 +25,17 @@ const gemini = new ChatGoogleGenerativeAI({
 export function getModel(agent){
     switch (agent) {
         case "chat":
-            return gemini;
+            return grok1;
             break;
         case "search":
-            return grok1;
+            return grok2;
             break;
         case "coding":
             return grok2;
             break;
         
         default:
-            return grok2;
+            return grok3;
     
     }
 }
