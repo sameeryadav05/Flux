@@ -4,11 +4,13 @@ import { useParams } from 'react-router-dom'
 import EmptyChat from './EmptyChat'
 import { SecondaryLoader } from '../loader'
 import MessageBubble from '../MessageBubble'
+import { useChat } from '../../api/ChatService'
 
 
-const ChatArea = ({messagesQuery}) => {
-  const {data = [] , isLoading } = messagesQuery  
-  useGetMessages
+const ChatArea = ({messagesQuery,chatMutation}) => {
+  const {data = [] , isLoading } = messagesQuery 
+  const isThinking = chatMutation.isPending
+  
   console.log("messeage data",data);
   const {conversationId} = useParams()
   console.log(conversationId);
@@ -21,7 +23,7 @@ const ChatArea = ({messagesQuery}) => {
   return (
     <>
     {
-      <div className='flex-1 overflow-y-auto overflow-x-hidden px-6 py-3 space-y-5 no-scrollbar custom-scrollbar'>
+      <div className='flex-1 overflow-y-auto overflow-x-hidden px-6 py-3 space-y-5 custom-scrollbar scroll-smooth'>
          {
           (data.length == 0 || !conversationId) ? <div className='h-full flex-center'><EmptyChat/> </div>: 
 
@@ -29,8 +31,8 @@ const ChatArea = ({messagesQuery}) => {
             {
               data.map((message,index)=>{
                 return (
-                  <div key={index}>
-                      <MessageBubble role={message?.role} content={message?.content} />
+                  <div key={index} className="mx-auto w-full max-w-4xl">
+                      <MessageBubble role={message?.role} content={message?.content} isThinking={isThinking}/>
                   </div>
                 )
               })

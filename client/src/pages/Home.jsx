@@ -16,7 +16,7 @@ const Home = () => {
         isOpen,
         setIsOpen } = useAuth();
   return (
-    <main className='min-h-screen w-full flex'>
+    <main className='h-screen w-full flex overflow-hidden'>
         {!isMobile && <Sidebar/> }
         {(isMobile&&isOpen) && <Sidebar/>} 
         {(isMobile&&!isOpen) && <>

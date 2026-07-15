@@ -10,9 +10,9 @@ const Chat = () => {
   const messagesQuery = useGetMessages(conversationId)
       const chatMutation = useChat()
   return (
-    <div className='flex flex-1 flex-col border-r border-neutral-200 dark:border-neutral-800 p-1'>
+    <div className='flex h-full flex-1 flex-col overflow-hidden border-r border-neutral-200 dark:border-neutral-800'>
       <Navbar/>
-      <ChatArea messagesQuery={messagesQuery}/>
+      <ChatArea messagesQuery={messagesQuery} chatMutation={chatMutation}/>
       <InputArea chatMutation={chatMutation} />
     </div>
   )
