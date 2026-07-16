@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import Tooltip from "./Tooltip";
 import Conversations from "./chat/Conversations";
 import { GiTwoCoins } from "react-icons/gi";
+import { useNavigate } from "react-router-dom";
 
 
 const Sidebar = () => {
@@ -27,6 +28,8 @@ const Sidebar = () => {
   const logoutQuery = useLogout()
   const theme = useSelector((state) => state.theme.mode);
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
 
   if(isCollapsed && !isMobile)
@@ -77,7 +80,7 @@ const Sidebar = () => {
       <div className="p-3">
         <Tooltip text={'New Chat'} position="right">
                       <button
-          onClick={createConversation}
+          onClick={()=>navigate('/ai',{replace:true})}
           disabled={isPending}
           className="
           
@@ -150,7 +153,7 @@ const Sidebar = () => {
       h-screen
       w-full
       md:w-56
-      lg:w-72
+      lg:w-64
 
       flex
       flex-col
@@ -201,7 +204,7 @@ const Sidebar = () => {
 
       <div className="p-3">
         <button
-          onClick={createConversation}
+          onClick={()=>navigate('/ai',{replace:true})}
           disabled={isPending}
           className="
           w-full

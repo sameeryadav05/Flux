@@ -6,8 +6,9 @@ import graph from '../graph/graph.js'
 export const agent=async(req,res)=>{
     try {
         
-        const {prompt,conversationId} = req.body
-   
+        let {prompt,conversationId , agent } = req.body
+        agent = (agent || "Auto").trim().toLowerCase();
+        console.log(agent);
         const { data: userMessage }  = await axios.post('/save-message',{
 
             conversationId,role:"user",content:prompt
@@ -15,6 +16,7 @@ export const agent=async(req,res)=>{
         const result = await graph.invoke({
             prompt,
             conversationId,
+            agent
         })
         const response = result.aiResponse
         await addMessage(conversationId,"user",prompt);

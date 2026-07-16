@@ -2,8 +2,17 @@ import { getModel } from "../config/llm_model.js"
 
 
 export const Router = async(state)=>{
+    if(state.agent && state.agent !== "auto")
+    {  
+        console.log("Router Agent",state.agent);
+        return {
+            ...state,
+            agent:state.agent.trim().toLowerCase()
+        }
+
+    }
         const llm = await getModel("router")
-        const prompt = `You are an Agent Router.
+        const systemPrompt = `You are an Agent Router.
                 Available Agents:
                     - chat
                     - search
@@ -60,14 +69,14 @@ export const Router = async(state)=>{
         const response = await llm.invoke([
     {
         role: "system",
-        content: prompt
+        content: systemPrompt
     },
     {
         role: "user",
         content: state.prompt
     }
 ])
-        console.log(response);
+
         return {
             ...state,
             agent: response.content.trim().toLowerCase()

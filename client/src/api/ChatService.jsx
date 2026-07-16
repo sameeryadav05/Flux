@@ -32,8 +32,8 @@ export const useCreateConversation = () => {
 export const useChat = ()=>{
       const queryClient = useQueryClient();
       return useMutation({
-        mutationFn:async ({ prompt, conversationId })=>{
-          const {data} = await API.post('/agent/chat',{prompt,conversationId})
+        mutationFn:async ({ prompt, conversationId , agent })=>{
+          const {data} = await API.post('/agent/chat',{prompt,conversationId,agent})
           return data;
         },
         onMutate:async (variables)=>{

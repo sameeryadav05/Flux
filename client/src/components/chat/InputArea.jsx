@@ -2,9 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { FiArrowUp, FiPaperclip } from "react-icons/fi";
 import { useCreateConversation, useUpdateConversation } from "../../api/ChatService";
 import { useParams } from "react-router-dom";
+import Agents from "./Agents";
+
 
 
 const InputArea = ({chatMutation}) => {
+  const [agent, setAgent] = useState('Auto');
   const {conversationId} = useParams();
   const textareaRef = useRef(null);
   const [value,setValue] = useState('')
@@ -33,7 +36,8 @@ const InputArea = ({chatMutation}) => {
 
     chatMutation.mutate({
       prompt:value,
-      conversationId:id
+      conversationId:id,
+      agent
     })
 
 
@@ -46,6 +50,7 @@ const InputArea = ({chatMutation}) => {
 
   return (
     <div className=" bg-white dark:bg-neutral-950 px-5 py-4 no-scrollbar custom-scrollbar">
+
       <div
         className="
           flex items-end justify-center
@@ -61,6 +66,9 @@ const InputArea = ({chatMutation}) => {
           focus-within:border-violet-500
         "
       >
+      <div className="flex flex-center gap-1">
+
+          <Agents agent={agent} setAgent={setAgent}/>
         {/* Attachment */}
         <button
           className="
@@ -77,6 +85,7 @@ const InputArea = ({chatMutation}) => {
         >
           <FiPaperclip size={16} />
         </button>
+      </div>
 
         {/* Textarea */}
         <textarea
