@@ -30,7 +30,7 @@ const ChatArea = ({messagesQuery,chatMutation}) => {
               data.map((message,index)=>{
                 return (
                   <div key={index} className="mx-auto w-full max-w-4xl">
-                      <MessageBubble role={message?.role} content={message?.content} isThinking={message?.isThinking}/>
+                      <MessageBubble role={message?.role} content={message?.content} isThinking={message?.isThinking} images={message?.images}/>
                   </div>
                 )
               })

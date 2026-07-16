@@ -52,7 +52,8 @@ export const useChat = ()=>{
                 {
                   role:'assistant',
                   content:'',
-                  isThinking:true
+                  isThinking:true,
+                  images: [],
                 }
               ]
               
@@ -82,7 +83,9 @@ export const useChat = ()=>{
         },
 
         onSettled:(data, error, variables)=>{
-          queryClient.invalidateQueries(["messages",variables.conversationId])
+          queryClient.invalidateQueries({
+            queryKey:["messages",variables.conversationId]
+          })
         },
 
 
@@ -116,6 +119,7 @@ export const useGetMessages = (conversationId)=>{
       return messages.map((message)=>({
         role:message.role,
         content:message.content,
+        images: message.images || [],
         isThinking: message.isThinking ?? false,
       }))
     },

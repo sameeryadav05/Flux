@@ -25,12 +25,14 @@ export const agent=async(req,res)=>{
             conversationId,
             role: "assistant",
             content: response,
+            images:result.images
         });
         
 
         return res.status(200).json({
             role:assistantMessage.role,
-            content:assistantMessage.content
+            content:assistantMessage.content,
+            images:result.images
         })
 
     } catch (error) {

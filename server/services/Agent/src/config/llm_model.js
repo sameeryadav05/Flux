@@ -19,7 +19,8 @@ const grok3 = new ChatGroq({
 
 
 const gemini = new ChatGoogleGenerativeAI({
-    model: "gemini-flash-latest",
+    model: "gemini-2.5-flash",
+    apiKey:process.env.GOOGLE_API_KEY
 })
 
 export function getModel(agent){
@@ -32,7 +33,9 @@ export function getModel(agent){
 
         case "coding":
             return grok2;
-
+            
+        case "image":
+            return gemini;
         
         default:
             return grok3;

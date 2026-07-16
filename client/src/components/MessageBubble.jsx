@@ -12,12 +12,18 @@ import {
   oneDark,
   oneLight,
 } from "react-syntax-highlighter/dist/esm/styles/prism";
+
 import { useSelector } from "react-redux";
 
-const MessageBubble = ({ role, content, isThinking }) => {
+const MessageBubble = ({
+  role,
+  content,
+  isThinking,
+  images = [],
+}) => {
   const isUser = role === "user";
+  const theme = useSelector((state) => state.theme.mode);
 
-    const theme = useSelector((state) => state.theme.mode);
   return (
     <div
       className={`flex w-full mb-8 ${
@@ -120,8 +126,59 @@ const MessageBubble = ({ role, content, isThinking }) => {
           {isThinking && !isUser && !content ? (
             <ThinkingAnimation />
           ) : (
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
+            <>
+              {/* Images */}
+
+              {images.length > 0 && (
+                <div
+                  className={`
+                    mb-6
+                    grid
+                    gap-3
+                    ${
+                      images.length === 1
+                        ? "grid-cols-1"
+                        : images.length === 2
+                        ? "grid-cols-2"
+                        : "grid-cols-2 md:grid-cols-3"
+                    }
+                  `}
+                >
+                  {images.map((image, index) => (
+                    <a
+                      key={index}
+                      href={image}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <img
+                        src={image}
+                        alt={`Generated ${index + 1}`}
+                        loading="lazy"
+                        className="
+                          w-full
+                          rounded-xl
+                          border
+                          h-48
+                          border-neutral-200
+                          dark:border-neutral-700
+                          object-cover
+                          transition
+                          duration-200
+                          hover:scale-[1.02]
+                          cursor-zoom-in
+                          aspect-square
+                        "
+                      />
+                    </a>
+                  ))}
+                </div>
+              )}
+
+              {/* Markdown */}
+
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
               components={{
                 h1: ({ children }) => (
                   <h1 className="text-3xl font-bold mb-5">
@@ -293,9 +350,10 @@ const MessageBubble = ({ role, content, isThinking }) => {
                   />
                 ),
               }}
-            >
-              {content}
-            </ReactMarkdown>
+              >
+                {content}
+              </ReactMarkdown>
+            </>
           )}
         </div>
       </div>
