@@ -5,7 +5,7 @@ const searchAgent = async (state) => {
         const result = await searchTool.invoke({
             query:state.prompt,
         })
-        console.log("Tavily result",result);
+        // console.log("Tavily result",result);
         return {
             ...state,
             searchResults:result,

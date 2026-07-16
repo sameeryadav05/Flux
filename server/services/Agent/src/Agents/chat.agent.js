@@ -6,19 +6,27 @@ const chatAgent = async (state) => {
   const llm = await getModel("chat");
   const history = await getRecentMessages(state.conversationId);
 
-  const searchContext = state.searchResults ? `Web Search result : ${JSON.stringify(state.searchResults)} 
-    Answer the user using only above search results
-  ` : ''
+const searchContext = state.searchResults?.results
+  ?.map(
+    (result, index) => `
+Result ${index + 1}
+
+Title: ${result.title}
+
+Content:
+${result.content?.slice(0, 600)}
+
+Source:
+${result.url}
+`
+  )
+  .join("\n\n");
 
   const systemPrompt = `You are FluxAI, a helpful, intelligent, and conversational AI assistant.
 
 Your goal is to provide accurate, useful, and easy-to-understand responses while maintaining a friendly and professional tone.
 
-${searchContext}
 
-If searchContext exists : 
-  - use search result to answer.
-  - Do not mention internal tools.
 
 =========================
 GENERAL BEHAVIOR
@@ -124,6 +132,15 @@ Always optimize your response for clarity and usefulness.`
   const messages = [
     new SystemMessage(systemPrompt),
   ]
+
+  if(searchContext)
+  {
+    messages.push(new HumanMessage(`
+          Serach Results : ${searchContext}
+          Use only these search results while answering the next user question.
+          Do not mention internal tools.
+      `))
+  }
 
   history.forEach(msg=>{
       if(msg.role == "user")

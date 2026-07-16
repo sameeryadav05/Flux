@@ -26,10 +26,10 @@ const gemini = new ChatGoogleGenerativeAI({
 export function getModel(agent){
     switch (agent) {
         case "chat":
-            return grok1;
+            return grok2;
 
         case "search":
-            return grok1;
+            return grok2;
 
         case "coding":
             return grok2;
