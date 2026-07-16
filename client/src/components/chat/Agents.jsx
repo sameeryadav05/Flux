@@ -8,7 +8,7 @@ import {
   Image,
   MessageCircle,
 } from "lucide-react";
-import Tooltip from "../Tooltip.jsx";
+
 
 const Agents = ({agent, setAgent}) => {
   const [open, setOpen] = useState(false);
@@ -61,7 +61,7 @@ const Agents = ({agent, setAgent}) => {
 
   return (
     <div className="relative" ref={menuRef}>
-<Tooltip text={agent} position="top">
+
   <button
     onClick={() => setOpen((prev) => !prev)}
     className="relative flex items-center justify-center size-9 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-800 transition"
@@ -90,7 +90,7 @@ const Agents = ({agent, setAgent}) => {
       {agent}
     </span>
   </button>
-</Tooltip>
+
 
       {open && (
         <div className="absolute bottom-10 left-0 w-44 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 shadow-xl overflow-hidden z-50">

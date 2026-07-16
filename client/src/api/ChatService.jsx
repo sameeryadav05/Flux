@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from 'react-router-dom';
 import { toast ,Bounce } from 'react-toastify';
 
+
 export const useCreateConversation = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient();
@@ -65,6 +66,7 @@ export const useChat = ()=>{
         onError:(error,variables,context)=>{
           queryClient.setQueryData(["messages",variables.conversationId],context.previousMessageData)
           console.log("Ai Response Error",error?.response?.data);
+
             return toast.error(error.response?.data?.message, {
                 position: "top-right",
                 autoClose: 1000,
@@ -76,6 +78,7 @@ export const useChat = ()=>{
                 theme: "dark",
                 transition: Bounce,
             });
+
         },
 
         onSettled:(data, error, variables)=>{
