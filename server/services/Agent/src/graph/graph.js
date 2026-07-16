@@ -16,7 +16,7 @@ workflow.addNode('search',searchAgent)
 workflow.addNode('coding',codingAgent)
 workflow.addNode('ppt',pptAgent)
 workflow.addNode('pdf',pdfAgent)
-workflow.addNode('imagegen',imageAgent)
+workflow.addNode('image',imageAgent)
 
 workflow.addEdge("__start__","router")
 workflow.addConditionalEdges("router",(state)=>{
@@ -36,8 +36,8 @@ workflow.addConditionalEdges("router",(state)=>{
         case "pdf":
             return "pdf"
             break;
-        case "imagegen":
-            return "imagegen"
+        case "image":
+            return "image"
             break;
 
     
@@ -51,7 +51,7 @@ workflow.addConditionalEdges("router",(state)=>{
     coding:"coding",
     ppt:"ppt",
     pdf:"pdf",
-    imagegen:"imagegen"
+    image:"image"
 
 
 })
@@ -61,7 +61,7 @@ workflow.addEdge("chat","__end__")
 workflow.addEdge("coding","__end__")
 workflow.addEdge("ppt","__end__")
 workflow.addEdge("pdf","__end__")
-workflow.addEdge("imagegen","__end__")
+workflow.addEdge("image","__end__")
 
 const graph = workflow.compile();
 

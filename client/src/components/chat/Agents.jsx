@@ -6,6 +6,7 @@ import {
   FileText,
   Presentation,
   Image,
+  MessageCircle,
 } from "lucide-react";
 import Tooltip from "../Tooltip.jsx";
 
@@ -18,6 +19,10 @@ const Agents = ({agent, setAgent}) => {
     {
       icon: <Bot size={16} />,
       label: "Auto",
+    },
+    {
+      icon: <MessageCircle size={16} />,
+      label: "Chat",
     },
     {
       icon: <Globe size={16} />,

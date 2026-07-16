@@ -26,13 +26,13 @@ export function getModel(agent){
     switch (agent) {
         case "chat":
             return grok1;
-            break;
+
         case "search":
-            return grok2;
-            break;
+            return grok1;
+
         case "coding":
             return grok2;
-            break;
+
         
         default:
             return grok3;

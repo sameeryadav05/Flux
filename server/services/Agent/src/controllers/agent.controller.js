@@ -8,7 +8,7 @@ export const agent=async(req,res)=>{
         
         let {prompt,conversationId , agent } = req.body
         agent = (agent || "Auto").trim().toLowerCase();
-        console.log(agent);
+        console.log("user selected agent",agent);
         const { data: userMessage }  = await axios.post('/save-message',{
 
             conversationId,role:"user",content:prompt

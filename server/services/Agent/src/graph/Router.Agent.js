@@ -4,7 +4,7 @@ import { getModel } from "../config/llm_model.js"
 export const Router = async(state)=>{
     if(state.agent && state.agent !== "auto")
     {  
-        console.log("Router Agent",state.agent);
+        console.log("Responsed with ",state.agent , "agent");
         return {
             ...state,
             agent:state.agent.trim().toLowerCase()
@@ -19,7 +19,7 @@ export const Router = async(state)=>{
                     - coding
                     - pdf
                     - ppt
-                    - imageGen
+                    - image
 
                 Rules:
                 - chat : 
@@ -50,32 +50,50 @@ export const Router = async(state)=>{
                     questions about generate ppt or presentation
                     or ppt context
 
-                - imageGen
-                    questions related to image generation or create image
+                - image
+                    questions related to image generation or create image or Ai art
 
-                Return only one word : 
+                Return only one word & Never explain your answer.
                 
                 chat
                 search
                 coding
                 pdf
                 ppt
-                imageGen
+                image
 
-                user query : 
-                ${state.prompt}
         `
 
-        const response = await llm.invoke([
-    {
-        role: "system",
-        content: systemPrompt
-    },
-    {
-        role: "user",
-        content: state.prompt
-    }
-])
+    const response = await llm.invoke([
+        {
+            role: "system",
+            content: systemPrompt
+        },
+        {
+            role: "user",
+            content: state.prompt
+        }
+    ])
+
+    console.log("Router Agent response : ",response.content);
+
+    const validAgents = [
+        "chat",
+        "search",
+        "coding",
+        "pdf",
+        "ppt",
+        "image",
+    ];
+
+let agent = response.content
+    .trim()
+    .toLowerCase()
+    .replace(/[^\w]/g, "");
+
+if (!validAgents.includes(agent)) {
+    agent = "chat";
+}
 
         return {
             ...state,
