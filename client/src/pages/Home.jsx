@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toogleTheme } from '../redux/theme/themeSlice'
 import Sidebar from '../components/Sidebar'
 import Chat from '../components/chat/Chat'
-import Artifacts from '../components/Artifacts'
+
 import { useAuth } from '../utils/AuthProvider'
 import { GoSidebarCollapse } from 'react-icons/go'
 import { Outlet } from 'react-router-dom'
+import Artifacts from '../components/Artifacts/Artifacts'
+import { openArtifacts } from '../redux/Artifcacts/ArtifactSlice'
 const Home = () => {
   const dispatch = useDispatch()
   const {  isCollapsed,
@@ -19,6 +21,8 @@ const Home = () => {
       const { artifacts, isOpen:isArtifactOpen } = useSelector(
         (state) => state.artifact
     );
+
+    console.log("Home:isArtifactOpen", isArtifactOpen);
   return (
     <main className='h-screen w-full flex overflow-hidden'>
         {!isMobile && <Sidebar/> }
@@ -40,6 +44,7 @@ const Home = () => {
                 if(isMobile)
                 {
                   setIsOpen(false);
+                  dispatch(openArtifacts())
                   // setIsOpen(true);
                 }
               }}>

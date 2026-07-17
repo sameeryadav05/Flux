@@ -1,14 +1,20 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import EmptyChat from './EmptyChat'
 import { SecondaryLoader } from '../loader'
 import MessageBubble from '../MessageBubble'
 import { useChat } from '../../api/ChatService'
+import { useDispatch } from 'react-redux'
+import { clearArtifacts, setArtifacts } from '../../redux/Artifcacts/ArtifactSlice'
+
+
 
 
 const ChatArea = ({messagesQuery,chatMutation}) => {
   const {data = [] , isLoading } = messagesQuery 
+
+  const dispatch = useDispatch()
 
   const {conversationId} = useParams()
   console.log(conversationId);
@@ -18,6 +24,24 @@ const ChatArea = ({messagesQuery,chatMutation}) => {
           <SecondaryLoader/>
       </div>
     }
+
+    const hasArtifacts = data.some(
+      (msg) => msg.artifacts?.length > 0
+    );
+
+
+    useEffect(() => {
+      const latestArtifactMessage = [...data]
+        .reverse()
+        .find(msg => msg.artifacts?.length);
+
+      if (latestArtifactMessage) {
+        dispatch(setArtifacts(latestArtifactMessage.artifacts));
+      } else {
+        dispatch(clearArtifacts());
+      }
+    }, [data]);
+
   return (
     <>
     {

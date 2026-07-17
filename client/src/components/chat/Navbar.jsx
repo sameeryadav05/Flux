@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import {NavLink} from 'react-router-dom'
+import {NavLink } from 'react-router-dom'
 import logo from '/favicon.svg'
 import { useAuth } from '../../utils/AuthProvider';
 import Tooltip from '../Tooltip';
@@ -8,14 +8,22 @@ import { MdDarkMode } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { toogleTheme } from '../../redux/theme/themeSlice';
 import { GiTwoCoins } from "react-icons/gi";
-export default function Navbar() {
+import { openArtifacts } from '../../redux/Artifcacts/ArtifactSlice';
+
+
+export default function Navbar({hasArtifacts}) {
+
    const [isMenuOpen, setIsMenuOpen] = useState(false);
    const menuRef = useRef(null);
    const lastFocusedElementRef = useRef(null)
     const {isMobile}= useAuth()
       const theme = useSelector((state) => state.theme.mode);
-  const dispatch = useDispatch();
+      const { isOpen : Artifact } = useSelector(state => state.artifact);
 
+    
+
+  const dispatch = useDispatch();
+   console.log("Navbar:Artifact", Artifact);
    const openMenu = () => {
       lastFocusedElementRef.current = document.activeElement;
       setIsMenuOpen(true);
@@ -48,6 +56,9 @@ export default function Navbar() {
          document.removeEventListener('keydown', handleEscapeKey);
       };
    }, [isMenuOpen]);
+
+
+
 
   
 
@@ -118,6 +129,15 @@ export default function Navbar() {
               upgrade
               
             </button>
+
+{
+              hasArtifacts && <button className="text-xs p-2  flex-center gap-1 rounded-md bg-violet-500/20 text-violet-700 dark:text-white" onClick={()=>{
+               dispatch(openArtifacts())
+            }}>
+              Code Panel
+              
+            </button>
+}
          </div>
       </nav>
       }
