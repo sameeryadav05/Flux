@@ -17,6 +17,7 @@ import {
   SiJson,
   SiMarkdown,
 } from "react-icons/si";
+import { FaPlay } from "react-icons/fa6";
 
 import { VscFileCode } from "react-icons/vsc";
 
@@ -62,10 +63,17 @@ export default function FileTabs({
       "
     >
       {files.map((file) => {
-        const extension = file.name.split(".").pop();
 
-        const active =
-          selectedFile.name === file.name;
+          const isOutput = file.type === "output";
+
+      const extension = isOutput
+          ? ""
+          : file.name.split(".").pop();
+
+        // const extension = file.name.split(".").pop();
+
+const active =
+selectedFile.name === file.name;
 
         return (
           <button
@@ -107,9 +115,20 @@ export default function FileTabs({
             `}
           >
             <span className="text-lg">
-              {extensionIcons[extension] ?? (
-                <VscFileCode />
-              )}
+              {
+                isOutput
+
+                  ? (
+                      <FaPlay
+                          className="text-green-500"
+                      />
+                  )
+
+                  : (
+                      extensionIcons[extension] ??
+                      <VscFileCode />
+                  )
+              }
             </span>
 
             <span

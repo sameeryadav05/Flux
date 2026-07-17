@@ -6,6 +6,9 @@ import FileTabs from "./FileTabs";
 import MonacoViewer from "./MonacoViewer";
 import ResizeHandle from "./ResizeHandle";
 import { useAuth } from "../../utils/AuthProvider";
+import Preview from "./Preview";
+
+
 
 const languageMap = {
   html: "html",
@@ -47,48 +50,63 @@ export default function Artifacts() {
 
   const project = artifacts[0];
 
-  const [selectedFile, setSelectedFile] = useState(
-    project.files[0]
-  );
+const OUTPUT_TAB = {
+  id: "__output__",
+  name: "Output",
+  type: "output",
+};
+
+const [selectedTab, setSelectedTab] = useState(
+  project.files[0]
+);
 
   /*
     If another project is generated,
     automatically open its first file.
   */
 
-  useEffect(() => {
-    if (project?.files?.length) {
-      setSelectedFile(project.files[0]);
-    }
-  }, [project]);
+useEffect(() => {
+  if (project?.files?.length) {
+    setSelectedTab(project.files[0]);
+  }
+}, [project]);
 
-  const language = useMemo(() => {
-    const ext = selectedFile?.name
-      ?.split(".")
-      ?.pop();
+const language = useMemo(() => {
+  if (selectedTab.type === "output")
+    return "plaintext";
 
-    return languageMap[ext] || "plaintext";
-  }, [selectedFile]);
+  const ext = selectedTab.name
+    .split(".")
+    .pop();
 
-  // const {isMobile} = useAuth()
+  return languageMap[ext] || "plaintext";
+}, [selectedTab]);
+  const {isMobile} = useAuth()
+
+  const tabs = [
+  ...project.files,
+  OUTPUT_TAB,
+];
 
   return (
 <aside
-  className="
-    hidden lg:flex
-    relative
-    flex-col
-    shrink-0
+  className={`
 
+    ${
+      isMobile
+        ? "fixed inset-0 z-50 flex"
+        : "relative flex shrink-0"
+    }
+
+    flex-col
     bg-white
     dark:bg-neutral-950
-
     border-l
     border-neutral-200
     dark:border-neutral-800
-  "
+  `}
   style={{
-    width,
+    width: isMobile ? "100%" : width,
   }}
 >
       {/* Resize Handle (Desktop only) */}
@@ -107,19 +125,29 @@ export default function Artifacts() {
       {/* Tabs */}
 
       <FileTabs
-        files={project.files}
-        selectedFile={selectedFile}
-        onSelect={setSelectedFile}
+        files={tabs}
+        selectedFile={selectedTab}
+        onSelect={setSelectedTab}
       />
 
       {/* Editor */}
 
   <div className="flex-1 min-h-0 overflow-hidden">
-      <MonacoViewer
-          language={language}
-          value={selectedFile.content}
-          theme={theme}
-      />
+{
+selectedTab.type === "output"
+
+? (
+    <Preview project={project} />
+)
+
+: (
+    <MonacoViewer
+        language={language}
+        value={selectedTab.content}
+        theme={theme}
+    />
+)
+}
   </div>
     </aside>
   );

@@ -4,7 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from 'react-router-dom';
 import { toast ,Bounce } from 'react-toastify';
 import { useDispatch } from "react-redux";
-import { setArtifacts } from '../redux/Artifcacts/ArtifactSlice';
+import { openArtifacts, setArtifacts } from '../redux/Artifcacts/ArtifactSlice';
 
 
 
@@ -20,6 +20,7 @@ export const useCreateConversation = () => {
 
     onSuccess: (data) => {
         console.log("create Conversation data",data);
+
         navigate(`${data._id}`,{replace:true})
         queryClient.invalidateQueries({
         queryKey: ["all", "conversation"],
@@ -99,6 +100,7 @@ export const useChat = ()=>{
           console.log("Ai Response",data);
           if (data.artifacts?.length) {
               dispatch(setArtifacts(data.artifacts));
+              dispatch(openArtifacts());
           }
           queryClient.setQueryData(
             ["messages", variables.conversationId],
@@ -116,6 +118,8 @@ export const useChat = ()=>{
               );
             }
           );
+
+
         },
 
 

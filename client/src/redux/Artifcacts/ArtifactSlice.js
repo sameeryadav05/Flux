@@ -11,7 +11,6 @@ const artifactSlice = createSlice({
   reducers: {
     setArtifacts: (state, action) => {
       state.artifacts = action.payload;
-      state.isOpen = action.payload.length > 0;
     },
 
     clearArtifacts: (state) => {

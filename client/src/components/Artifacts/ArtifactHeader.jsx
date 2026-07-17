@@ -123,7 +123,9 @@ const ArtifactHeader = ({ project }) => {
         </button>
 
         <button
-          onClick={() => dispatch(closeArtifacts())}
+          onClick={() => {
+            console.log("Close Artifact Clicked")
+            dispatch(closeArtifacts())}}
           className="
           size-9
 

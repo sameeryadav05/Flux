@@ -12,35 +12,29 @@ import { clearArtifacts, setArtifacts } from '../../redux/Artifcacts/ArtifactSli
 
 
 const ChatArea = ({messagesQuery,chatMutation}) => {
-  const {data = [] , isLoading } = messagesQuery 
+const { conversationId } = useParams();
+const { data = [], isLoading } = messagesQuery;
+const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
+useEffect(() => {
+  const latestArtifactMessage = [...data]
+    .reverse()
+    .find(msg => msg.artifacts?.length);
 
-  const {conversationId} = useParams()
-  console.log(conversationId);
-    if(isLoading)
-    {
-      return <div className='flex-1 flex-center'>
-          <SecondaryLoader/>
-      </div>
-    }
+  if (latestArtifactMessage) {
+    dispatch(setArtifacts(latestArtifactMessage.artifacts));
+  } else {
+    dispatch(clearArtifacts());
+  }
+}, [data, dispatch]);
 
-    const hasArtifacts = data.some(
-      (msg) => msg.artifacts?.length > 0
-    );
-
-
-    useEffect(() => {
-      const latestArtifactMessage = [...data]
-        .reverse()
-        .find(msg => msg.artifacts?.length);
-
-      if (latestArtifactMessage) {
-        dispatch(setArtifacts(latestArtifactMessage.artifacts));
-      } else {
-        dispatch(clearArtifacts());
-      }
-    }, [data]);
+if (isLoading) {
+  return (
+    <div className="flex-1 flex-center">
+      <SecondaryLoader />
+    </div>
+  );
+}
 
   return (
     <>
