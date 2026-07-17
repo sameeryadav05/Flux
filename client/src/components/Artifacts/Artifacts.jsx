@@ -35,7 +35,6 @@ const languageMap = {
 
 export default function Artifacts() {
 
-  console.log("Artifacts Mounted");
   const { artifacts, isOpen } = useSelector(
     (state) => state.artifact
   );

@@ -1,12 +1,12 @@
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import EmptyChat from './EmptyChat'
 import { SecondaryLoader } from '../loader'
 import MessageBubble from '../MessageBubble'
 import { useChat } from '../../api/ChatService'
 import { useDispatch } from 'react-redux'
-import { clearArtifacts, setArtifacts } from '../../redux/Artifcacts/ArtifactSlice'
+import { clearArtifacts, openArtifacts, setArtifacts } from '../../redux/Artifcacts/ArtifactSlice'
 
 
 
@@ -16,16 +16,34 @@ const { conversationId } = useParams();
 const { data = [], isLoading } = messagesQuery;
 const dispatch = useDispatch();
 
+
+
+const previousArtifactCount = useRef(0);
+
 useEffect(() => {
   const latestArtifactMessage = [...data]
     .reverse()
     .find(msg => msg.artifacts?.length);
 
-  if (latestArtifactMessage) {
-    dispatch(setArtifacts(latestArtifactMessage.artifacts));
-  } else {
+  if (!latestArtifactMessage) {
+    previousArtifactCount.current = 0;
     dispatch(clearArtifacts());
+    return;
   }
+
+  dispatch(setArtifacts(latestArtifactMessage.artifacts));
+
+  const currentCount = latestArtifactMessage.artifacts.length;
+
+  // Open only when a NEW artifact appears
+  if (
+    currentCount > 0 &&
+    previousArtifactCount.current === 0
+  ) {
+    dispatch(openArtifacts());
+  }
+
+  previousArtifactCount.current = currentCount;
 }, [data, dispatch]);
 
 if (isLoading) {

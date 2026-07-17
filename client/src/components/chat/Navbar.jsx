@@ -23,7 +23,7 @@ export default function Navbar({hasArtifacts}) {
     
 
   const dispatch = useDispatch();
-   console.log("Navbar:Artifact", Artifact);
+
    const openMenu = () => {
       lastFocusedElementRef.current = document.activeElement;
       setIsMenuOpen(true);

@@ -26,8 +26,7 @@ const Home = () => {
         (state) => state.artifact
     );
 
-    console.log("Home -> isArtifactOpen: ", isArtifactOpen);
-
+   
 
     
       const hasArtifacts = messagesQuery?.data?.some(

@@ -58,7 +58,6 @@ export const useGetUserInfo = ()=>{
     const query = useQuery({
         queryKey:["auth","user"],
         queryFn:async ()=>{
-            console.log("call /me");
             const result= await API.get('/me');
             return {user:result?.data?.user};
         },

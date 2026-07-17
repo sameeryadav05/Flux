@@ -13,13 +13,13 @@ export const useCreateConversation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => {
-      console.log("create conversation");
+
       const res = await API.post("/chat/create-conversation");
       return res.data;
     },
 
     onSuccess: (data) => {
-        console.log("create Conversation data",data);
+   
 
         navigate(`${data._id}`,{replace:true})
         queryClient.invalidateQueries({
@@ -97,10 +97,10 @@ export const useChat = ()=>{
 
     
         onSuccess:(data,variables)=>{
-          console.log("Ai Response",data);
           if (data.artifacts?.length) {
+            console.log("Opening because AI generated new artifacts");
               dispatch(setArtifacts(data.artifacts));
-              dispatch(openArtifacts());
+              // dispatch(openArtifacts());
           }
           queryClient.setQueryData(
             ["messages", variables.conversationId],
