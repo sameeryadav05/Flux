@@ -1,4 +1,6 @@
 import React from "react";
+import { FiCopy, FiCheck } from "react-icons/fi";
+import { useState } from "react";
 import logo from "/favicon.svg";
 
 import ReactMarkdown from "react-markdown";
@@ -10,8 +12,9 @@ import { FaCircle } from "react-icons/fa";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import {
   oneDark,
-  oneLight,
+  coy,
 } from "react-syntax-highlighter/dist/esm/styles/prism";
+
 
 import { useSelector } from "react-redux";
 
@@ -23,6 +26,20 @@ const MessageBubble = ({
 }) => {
   const isUser = role === "user";
   const theme = useSelector((state) => state.theme.mode);
+  const [copiedCode, setCopiedCode] = useState("");
+
+  const copyToClipboard = async (code) => {
+  try {
+    await navigator.clipboard.writeText(code);
+    setCopiedCode(code);
+
+    setTimeout(() => {
+      setCopiedCode("");
+    }, 2000);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   return (
     <div
@@ -287,48 +304,174 @@ const MessageBubble = ({
                   </blockquote>
                 ),
 
-                code({ inline, className, children }) {
-                  const match = /language-(\w+)/.exec(className || "");
+code({ inline, className, children }) {
+  const match = /language-(\w+)/.exec(className || "");
+  const code = String(children).replace(/\n$/, "");
 
-                  if (!inline && match) {
-                    return (
-                      <div className="my-6 overflow-hidden rounded-xl border border-neutral-300 dark:border-neutral-700">
-                        <SyntaxHighlighter
-                          language={match[1]}
-                          style={theme === "dark" ? oneDark : oneLight}
-                          customStyle={{
-                            margin: 0,
-                            padding: 12,
-                            borderRadius: 0,
-                            fontSize: 14,
-                          }}
-                        >
-                          {String(children).replace(/\n$/, "")}
-                        </SyntaxHighlighter>
-                      </div>
-                    );
-                  }
+  if (!inline) {
+    const isCopied = copiedCode === code;
 
-                  return (
-                    <code
-                      className="
-                        px-1.5
-                        py-1
-                        rounded-md
-                        text-[14px]
-                        font-mono
+    return (
+      <div
+        className="
+          my-6
+          overflow-hidden
+          rounded-2xl
+          border
+          border-neutral-200
+          dark:border-neutral-700
+          bg-white
+          dark:bg-neutral-900
+          shadow-sm
+        "
+      >
+        {/* Header */}
+        <div
+          className="
+            flex
+            items-center
+            justify-between
+            px-4
+            py-3
+            border-b
+            border-neutral-200
+            dark:border-neutral-700
 
-                        bg-neutral-200
-                        text-pink-600
+            bg-neutral-50
+            dark:bg-neutral-800
+          "
+        >
+          {/* Language */}
+          <div className="flex items-center gap-2">
+            <div
+              className="
+                flex
+                items-center
+                gap-2
 
-                        dark:bg-neutral-800
-                        dark:text-violet-300
-                      "
-                    >
-                      {children}
-                    </code>
-                  );
-                },
+                px-3
+                py-1
+
+                rounded-lg
+
+                bg-neutral-200
+                dark:bg-neutral-700
+              "
+            >
+              <span className="font-mono text-sm text-neutral-600 dark:text-neutral-300">
+                {"</>"}
+              </span>
+
+              <span
+                className="
+                  text-sm
+                  font-medium
+                  capitalize
+                  text-neutral-700
+                  dark:text-neutral-100
+                "
+              >
+                {match?.[1] || "text"}
+              </span>
+            </div>
+          </div>
+
+          {/* Copy Button */}
+          <button
+            onClick={() => copyToClipboard(code)}
+            className="
+              flex
+              items-center
+              gap-2
+
+              px-3
+              py-1.5
+
+              rounded-lg
+
+              text-sm
+
+              text-neutral-600
+              dark:text-neutral-300
+
+              hover:bg-neutral-200
+              dark:hover:bg-neutral-700
+
+              transition-all
+              duration-200
+            "
+          >
+            {isCopied ? (
+              <>
+                <FiCheck
+                  className="text-green-500"
+                  size={17}
+                />
+                <span className="text-green-600 dark:text-green-400 font-medium">
+                  Copied
+                </span>
+              </>
+            ) : (
+              <>
+                <FiCopy size={17} />
+                <span className="hidden sm:inline">
+                  Copy
+                </span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Code */}
+        <SyntaxHighlighter
+          language={match?.[1]}
+          style={theme === "dark" ? oneDark : coy}
+          PreTag="div"
+          showLineNumbers
+          wrapLongLines
+          customStyle={{
+            margin: 0,
+            padding: "18px",
+            borderRadius: 0,
+            fontSize: "14px",
+            background: "transparent",
+          }}
+          lineNumberStyle={{
+            color:
+              theme === "dark"
+                ? "#6b7280"
+                : "#9ca3af",
+            minWidth: "2.5em",
+            userSelect: "none",
+          }}
+        >
+          {code}
+        </SyntaxHighlighter>
+      </div>
+    );
+  }
+
+  return (
+    <code
+      className="
+        rounded-md
+        px-1.5
+        py-0.5
+
+        font-mono
+        text-[0.92em]
+
+        bg-neutral-100
+        text-rose-600
+
+        dark:bg-neutral-800
+        dark:text-violet-300
+      "
+    >
+      {children}
+    </code>
+  );
+},
 
                 strong: ({ children }) => (
                   <strong className="font-semibold">

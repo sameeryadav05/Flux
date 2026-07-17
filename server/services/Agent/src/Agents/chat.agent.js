@@ -3,7 +3,8 @@ import { getModel } from "../config/llm_model.js";
 import { getRecentMessages } from "../config/Memory.js";
 
 const chatAgent = async (state) => {
-  const llm = await getModel("chat");
+
+        const llm = await getModel("chat");
   const history = await getRecentMessages(state.conversationId);
 
 const searchContext = state.searchResults?.results
@@ -162,6 +163,8 @@ Always optimize your response for clarity and usefulness.`
     ...state,
     aiResponse: response.content,
   };
+      
+
 };
 
 export default chatAgent;

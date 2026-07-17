@@ -44,14 +44,14 @@ export async function updateConversations(req,res)
 
 export async function saveMessage(req,res){
     try {
-        const {conversationId,role,content , images} = req.body
+        const {conversationId,role,content , images ,artifacts} = req.body
 
         if(!conversationId || !role || !content)
         {
             return res.status(400).json({message:"Insufficient Data !"})
         }
 
-        const message = await Message.create({conversationId,role,content,images})
+        const message = await Message.create({conversationId,role,content,images,artifacts})
 
         return res.status(200).json(message)
         

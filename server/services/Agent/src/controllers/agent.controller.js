@@ -16,7 +16,7 @@ export const agent=async(req,res)=>{
         const result = await graph.invoke({
             prompt,
             conversationId,
-            agent
+            agent,
         })
         const response = result.aiResponse
         await addMessage(conversationId,"user",prompt);
@@ -25,18 +25,31 @@ export const agent=async(req,res)=>{
             conversationId,
             role: "assistant",
             content: response,
-            images:result.images
+            images:result?.images,
+            artifacts:result?.artifacts
         });
         
 
         return res.status(200).json({
             role:assistantMessage.role,
             content:assistantMessage.content,
-            images:result.images
+            images:result?.images,
+            artifacts:result?.artifacts
         })
 
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({message:`Something went wrong with Ai Agent ${error}`})
+        console.error(error);
+        if (error?.status === 429) {
+            return res.status(429).json({
+                success: false,
+                message:
+                    "Too many AI requests. Please wait a few seconds and try again.",
+            });
+        }
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+        });
     }
 }

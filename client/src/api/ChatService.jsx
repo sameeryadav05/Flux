@@ -3,6 +3,9 @@ import API from './Axios';
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from 'react-router-dom';
 import { toast ,Bounce } from 'react-toastify';
+import { useDispatch } from "react-redux";
+import { setArtifacts } from '../redux/Artifcacts/ArtifactSlice';
+
 
 
 export const useCreateConversation = () => {
@@ -31,6 +34,7 @@ export const useCreateConversation = () => {
 };
 
 export const useChat = ()=>{
+      const dispatch = useDispatch();
       const queryClient = useQueryClient();
       return useMutation({
         mutationFn:async ({ prompt, conversationId , agent })=>{
@@ -53,6 +57,7 @@ export const useChat = ()=>{
                   role:'assistant',
                   content:'',
                   isThinking:true,
+                  artifacts: [],
                   images: [],
                 }
               ]
@@ -92,16 +97,25 @@ export const useChat = ()=>{
     
         onSuccess:(data,variables)=>{
           console.log("Ai Response",data);
-          queryClient.setQueryData(["messages",variables.conversationId],(old=[])=>{
-                old.map((msg)=>
-                  msg.isThinking ? {
+          if (data.artifacts?.length) {
+              dispatch(setArtifacts(data.artifacts));
+          }
+          queryClient.setQueryData(
+            ["messages", variables.conversationId],
+            (old = []) => {
+              return old.map((msg) =>
+                msg.isThinking
+                  ? {
                       role: "assistant",
                       content: data.content,
+                      images: data.images || [],
+                      artifacts: data.artifacts || [],
                       isThinking: false,
-                  }
+                    }
                   : msg
-                )
-          })
+              );
+            }
+          );
         },
 
 
@@ -120,6 +134,7 @@ export const useGetMessages = (conversationId)=>{
         role:message.role,
         content:message.content,
         images: message.images || [],
+        artifacts:message.artifacts || [],
         isThinking: message.isThinking ?? false,
       }))
     },
