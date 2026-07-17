@@ -100,8 +100,9 @@ export default function Navbar({hasArtifacts}) {
             </div>
 
 
-            <Tooltip text={'Toogle theme'} position="left">
+
             <button
+            title='Theme'
               className="
               size-10
               flex-center
@@ -122,7 +123,7 @@ export default function Navbar({hasArtifacts}) {
                 <MdDarkMode size={22} />
               )}
             </button>
-          </Tooltip>
+
 
 
             <button className="text-xs p-2  flex-center gap-1 rounded-md bg-violet-500/20 text-violet-700 dark:text-white">

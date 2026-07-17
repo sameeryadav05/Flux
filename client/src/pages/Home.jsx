@@ -1,20 +1,35 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toogleTheme } from '../redux/theme/themeSlice'
 import Sidebar from '../components/Sidebar'
 import Chat from '../components/chat/Chat'
-
+// import {useDispatch} from 'react-redux'
 import { useAuth } from '../utils/AuthProvider'
 import { GoSidebarCollapse } from 'react-icons/go'
 import { Outlet, useParams } from 'react-router-dom'
 import Artifacts from '../components/Artifacts/Artifacts'
-import { openArtifacts } from '../redux/Artifcacts/ArtifactSlice'
+import { clearArtifacts, openArtifacts, setArtifacts } from '../redux/Artifcacts/ArtifactSlice'
 import { useGetMessages } from '../api/ChatService'
 const Home = () => {
   const {conversationId} = useParams();
-
-  const messagesQuery = useGetMessages(conversationId)
   const dispatch = useDispatch()
+  const messagesQuery = useGetMessages(conversationId)
+
+  const latestArtifactMessage = useMemo(() => {
+    return [...(messagesQuery.data ?? [])]
+        .reverse()
+        .find(msg => msg.artifacts?.length);
+}, [messagesQuery.data]);
+
+useEffect(() => {
+    if (latestArtifactMessage) {
+        dispatch(setArtifacts(latestArtifactMessage.artifacts));
+    } else {
+        dispatch(clearArtifacts());
+    }
+}, [latestArtifactMessage]);
+
+
   const {  isCollapsed,
         setIsCollapsed,
         isMobile,

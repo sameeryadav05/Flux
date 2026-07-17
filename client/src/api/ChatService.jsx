@@ -100,7 +100,7 @@ export const useChat = ()=>{
           if (data.artifacts?.length) {
             console.log("Opening because AI generated new artifacts");
               dispatch(setArtifacts(data.artifacts));
-              // dispatch(openArtifacts());
+              dispatch(openArtifacts());
           }
           queryClient.setQueryData(
             ["messages", variables.conversationId],

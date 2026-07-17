@@ -20,31 +20,31 @@ const dispatch = useDispatch();
 
 const previousArtifactCount = useRef(0);
 
-useEffect(() => {
-  const latestArtifactMessage = [...data]
-    .reverse()
-    .find(msg => msg.artifacts?.length);
+// useEffect(() => {
+//   const latestArtifactMessage = [...data]
+//     .reverse()
+//     .find(msg => msg.artifacts?.length);
 
-  if (!latestArtifactMessage) {
-    previousArtifactCount.current = 0;
-    dispatch(clearArtifacts());
-    return;
-  }
+//   if (!latestArtifactMessage) {
+//     previousArtifactCount.current = 0;
+//     dispatch(clearArtifacts());
+//     return;
+//   }
 
-  dispatch(setArtifacts(latestArtifactMessage.artifacts));
+//   dispatch(setArtifacts(latestArtifactMessage.artifacts));
 
-  const currentCount = latestArtifactMessage.artifacts.length;
+//   const currentCount = latestArtifactMessage.artifacts.length;
 
-  // Open only when a NEW artifact appears
-  if (
-    currentCount > 0 &&
-    previousArtifactCount.current === 0
-  ) {
-    dispatch(openArtifacts());
-  }
+//   // Open only when a NEW artifact appears
+//   if (
+//     currentCount > 0 &&
+//     previousArtifactCount.current === 0
+//   ) {
+//     dispatch(openArtifacts());
+//   }
 
-  previousArtifactCount.current = currentCount;
-}, [data, dispatch]);
+//   previousArtifactCount.current = currentCount;
+// }, [data, dispatch]);
 
 if (isLoading) {
   return (

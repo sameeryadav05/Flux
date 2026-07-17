@@ -72,8 +72,10 @@ ${state.prompt}
                 - Single Page unless ask otherwise
                 - Code should be error free & readable
                 - Proper logic & Check User request is fullfilled or not
+                - For IMAGES => Always use real images from unsplash.com
+                - IF Some generate Website , then give website with images from unsplash
 
-            Return ONLY Valid JSON
+            PLEASE Return ONLY Valid JSON 
 
             Schema:
 
@@ -97,14 +99,21 @@ ${state.prompt}
                 ]
             }
 
+
+            " ALWAYS RETURN VALID JSON RESPONSE "
+
             Rules:
                 - output must start with {
                 - output must end with }
+                - Always Return Valid JSON
                 - No markdown
                 - No explanation
                 - No extra text
                 - No \`\`\`
                 - Never Mention intent
+                - For IMAGES => Always use real unsplash images.
+
+
 
             User Request :
                 ${state.prompt}
@@ -242,6 +251,9 @@ When documenting code include:
 - Prefer inline code whenever possible.
 - Only use fenced code blocks for executable multi-line code.
 - Recommend official documentation whenever appropriate.
+- For IMAGES =>
+        Always use real unsplash images.
+
 
 `;
 

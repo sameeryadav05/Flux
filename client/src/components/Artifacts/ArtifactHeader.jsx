@@ -1,66 +1,95 @@
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { closeArtifacts } from "../../redux/Artifcacts/ArtifactSlice";
+
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 import {
   IoClose,
   IoDownloadOutline,
   IoCopyOutline,
   IoFolderOpenOutline,
+  IoCheckmark,
 } from "react-icons/io5";
 
 const ArtifactHeader = ({ project }) => {
   const dispatch = useDispatch();
 
-  function copyProjectNames() {
-    const text = project.files
-      .map((file) => file.name)
-      .join("\n");
+  const [copied, setCopied] = useState(false);
 
-    navigator.clipboard.writeText(text);
+  async function copyProject() {
+    try {
+      const text = project.files
+        .map(
+          (file) => `
+===== ${file.name} =====
+
+${file.content}
+`
+        )
+        .join("\n\n");
+
+      await navigator.clipboard.writeText(text);
+
+      setCopied(true);
+
+      setTimeout(() => {
+        setCopied(false);
+      }, 1500);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  function downloadProject() {
-    // ZIP download will be implemented later.
-    console.log(project);
+  async function downloadProject() {
+    try {
+      const zip = new JSZip();
+
+      project.files.forEach((file) => {
+        zip.file(file.name, file.content);
+      });
+
+      const blob = await zip.generateAsync({
+        type: "blob",
+      });
+
+      saveAs(
+        blob,
+        `${project.type.replace(/\s+/g, "-").toLowerCase()}.zip`
+      );
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
     <header
       className="
-      h-14
-      shrink-0
-
-      flex
-      items-center
-      justify-between
-
-      px-4
-
-      border-b
-      border-neutral-200
-      dark:border-neutral-800
-
-      bg-neutral-50
-      dark:bg-neutral-900
+        h-14
+        shrink-0
+        flex
+        items-center
+        justify-between
+        px-4
+        border-b
+        border-neutral-200
+        dark:border-neutral-800
+        bg-neutral-50
+        dark:bg-neutral-900
       "
     >
-      {/* LEFT */}
-
       <div className="flex items-center gap-3 overflow-hidden">
         <div
           className="
-          size-9
-
-          rounded-lg
-
-          bg-violet-500/15
-          text-violet-600
-
-          dark:text-violet-400
-
-          flex
-          items-center
-          justify-center
+            size-9
+            rounded-lg
+            bg-violet-500/15
+            text-violet-600
+            dark:text-violet-400
+            flex
+            items-center
+            justify-center
           "
         >
           <IoFolderOpenOutline size={18} />
@@ -71,79 +100,72 @@ const ArtifactHeader = ({ project }) => {
             {project.type}
           </h2>
 
-          <p className="text-xs text-neutral-500 truncate">
+          <p className="text-xs text-neutral-500">
             {project.files.length} files
           </p>
         </div>
       </div>
 
-      {/* RIGHT */}
-
       <div className="flex items-center gap-1">
+
         <button
-          onClick={copyProjectNames}
+          onClick={copyProject}
+          title="Copy Project"
           className="
-          size-9
-
-          rounded-lg
-
-          flex
-          items-center
-          justify-center
-
-          hover:bg-neutral-200
-          dark:hover:bg-neutral-800
-
-          transition
+            size-9
+            rounded-lg
+            flex
+            items-center
+            justify-center
+            transition
+            hover:bg-neutral-200
+            dark:hover:bg-neutral-800
           "
-          title="Copy filenames"
         >
-          <IoCopyOutline size={18} />
+          {copied ? (
+            <IoCheckmark
+              size={20}
+              className="text-green-500"
+            />
+          ) : (
+            <IoCopyOutline size={18} />
+          )}
         </button>
 
         <button
           onClick={downloadProject}
+          title="Download ZIP"
           className="
-          size-9
-
-          rounded-lg
-
-          flex
-          items-center
-          justify-center
-
-          hover:bg-neutral-200
-          dark:hover:bg-neutral-800
-
-          transition
+            size-9
+            rounded-lg
+            flex
+            items-center
+            justify-center
+            transition
+            hover:bg-neutral-200
+            dark:hover:bg-neutral-800
           "
-          title="Download Project"
         >
           <IoDownloadOutline size={18} />
         </button>
 
         <button
-          onClick={() => {
-            console.log("Close Artifact Clicked")
-            dispatch(closeArtifacts())}}
-          className="
-          size-9
-
-          rounded-lg
-
-          flex
-          items-center
-          justify-center
-
-          hover:bg-red-100
-          hover:text-red-600
-
-          dark:hover:bg-red-500/20
-          dark:hover:text-red-400
-
-          transition
-          "
+          onClick={() => dispatch(closeArtifacts())}
           title="Close"
+          className="
+            size-9
+            rounded-lg
+            flex
+            items-center
+            justify-center
+            transition
+
+            hover:bg-red-100
+            hover:text-red-600
+
+            dark:hover:bg-red-500/20
+            dark:hover:text-red-400
+          "
         >
           <IoClose size={20} />
         </button>
