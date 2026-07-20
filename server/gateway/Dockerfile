@@ -5,13 +5,13 @@ WORKDIR /app
 
 COPY  package*.json ./
 
-RUN npm ci
+RUN npm install
 
 COPY  Gateway/package*.json ./gateway/
 
 WORKDIR /app/gateway
 
-RUN npm ci
+RUN npm install
 
 WORKDIR /app
 

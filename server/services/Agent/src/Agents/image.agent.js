@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-import {getURLFromS3, uploadTOS3} from '../utils/upload_S3.js'
+import {getURLFromS3, uploadTOS3} from '../utils/uploadS3.js'
 const imageAgent = async (state) => {
     try {
             

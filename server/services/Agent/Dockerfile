@@ -5,13 +5,13 @@ WORKDIR /app
 
 COPY  package*.json ./
 
-RUN npm ci
+RUN npm install
 
 COPY  ./services/Agent/package*.json ./services/Agent/
 
 WORKDIR /app/services/Agent
 
-RUN npm ci
+RUN npm install
 
 WORKDIR /app
 

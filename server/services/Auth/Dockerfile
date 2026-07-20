@@ -5,13 +5,13 @@ WORKDIR /app
 
 COPY  package*.json ./
 
-RUN npm ci
+RUN npm install
 
 COPY  ./services/Auth/package*.json ./services/Auth/
 
 WORKDIR /app/services/Auth
 
-RUN npm ci
+RUN npm install
 
 WORKDIR /app
 

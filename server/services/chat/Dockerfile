@@ -5,13 +5,13 @@ WORKDIR /app
 
 COPY  package*.json ./
 
-RUN npm ci
+RUN npm install
 
 COPY  ./services/Chat/package*.json ./services/Chat/
 
 WORKDIR /app/services/Chat
 
-RUN npm ci
+RUN npm install
 
 WORKDIR /app
 
