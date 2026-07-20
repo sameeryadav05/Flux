@@ -285,6 +285,7 @@ const MessageBubble = ({
                     {children}
                   </td>
                 ),
+ 
 
                 blockquote: ({ children }) => (
                   <blockquote
@@ -485,13 +486,32 @@ code({ inline, className, children }) {
                   </em>
                 ),
 
-                img: ({ src, alt }) => (
-                  <img
-                    src={src}
-                    alt={alt}
-                    className="rounded-xl my-5 max-w-full border border-neutral-200 dark:border-neutral-700"
-                  />
-                ),
+img: ({ src, alt }) => (
+  <a
+    href={src}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img
+      src={src}
+      alt={alt}
+      className="
+        w-full
+        max-w-md
+        h-72
+        object-cover
+        rounded-xl
+        my-5
+        border
+        border-neutral-200
+        dark:border-neutral-700
+        cursor-zoom-in
+        transition
+        hover:scale-[1.02]
+      "
+    />
+  </a>
+),
               }}
               >
                 {content}

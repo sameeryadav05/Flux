@@ -19,6 +19,7 @@ export const agent=async(req,res)=>{
             agent,
         })
         const response = result.aiResponse
+        // console.log(JSON.stringify(result.aiResponse));
         await addMessage(conversationId,"user",prompt);
         await addMessage(conversationId,"assistant",response)
         const { data: assistantMessage }  = await axios.post("/save-message", {

@@ -1,10 +1,15 @@
 import Redis from 'ioredis'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const redis = new Redis({
-  host: "localhost",
+  host: process.env.REDIS_HOST,
   port: 6379,
-  password: "sameer_2005",
+  password: process.env.REDIS_PASS,
 })
+
+
+
 
 
 redis.on('connect',()=>console.log("Redis Connected"))

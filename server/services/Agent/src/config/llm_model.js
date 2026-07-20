@@ -12,10 +12,12 @@ const grok1 = new ChatGroq({
 const grok2 = new ChatGroq({
     model: "llama-3.1-8b-instant",
     apiKey:process.env.GROQ_API_KEY_2,
+    maxTokens:150
 })
 const grok3 = new ChatGroq({
     model: "llama-3.1-8b-instant",
     apiKey:process.env.GROQ_API_KEY_3,
+    maxTokens:150
 })
 // openai/gpt-oss-120b
 
@@ -38,10 +40,10 @@ const openrouter = new ChatOpenRouter({
 export function getModel(agent){
     switch (agent) {
         case "chat":
-            return grok2;
+            return grok1;
 
         case "search":
-            return grok2;
+            return grok1;
 
         case "coding":
             console.log("coding Agent used");
