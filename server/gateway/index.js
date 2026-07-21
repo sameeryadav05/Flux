@@ -44,6 +44,10 @@ app.get('/me',protect,(req,res)=>{
     }
 })
 
+app.get('/',(req,res)=>{
+    res.send("Hello from gateway")
+})
+
 app.get('/health',async (req,res)=>{
     const data = await getGatewayHealth();
     res.json(data) 
