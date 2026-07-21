@@ -34,8 +34,8 @@ export const login = async (req,res)=>{
 
         res.cookie("fluxai",sessionId,{
             httpOnly:true,
-            secure:false, //prod - true
-            sameSite:"strict", //prod - none
+            secure:true, //prod - true
+            sameSite:"none", //prod - none
             maxAge:7*24*60*60*1000
         })
 
